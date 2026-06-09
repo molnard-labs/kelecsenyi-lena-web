@@ -1,0 +1,20 @@
+---
+import { site } from "../data/site";
+
+interface Props {
+  lang: "hu" | "en";
+}
+
+const { lang } = Astro.props;
+---
+
+<footer class="border-t border-[var(--border)] bg-lena-bg py-12">
+  <div class="container-page flex flex-col items-center gap-5 text-center text-sm text-lena-muted">
+    <p class="font-display text-3xl font-light text-lena-gold">{site.nameHu}</p>
+    <div class="flex max-w-full flex-wrap justify-center gap-x-6 gap-y-2">
+      <a class="break-all transition hover:text-lena-gold" href={`mailto:${site.email}`}>{site.email}</a>
+      <a class="whitespace-nowrap transition hover:text-lena-gold" href={`tel:${site.phoneMachine}`}>{site.phone}</a>
+    </div>
+    <p>© {new Date().getFullYear()} {site.nameHu}</p>
+  </div>
+</footer>

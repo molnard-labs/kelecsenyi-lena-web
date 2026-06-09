@@ -1,0 +1,13 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import ApplicationForm from "../../../components/ApplicationForm.astro";
+import { site } from "../../../data/site";
+---
+
+<BaseLayout
+  lang="en"
+  title={`Chart reading application | ${site.nameHu}`}
+  description="Application page for a 60-minute chart reading with Kelecsényi Léna."
+>
+  <ApplicationForm lang="en" />
+</BaseLayout>

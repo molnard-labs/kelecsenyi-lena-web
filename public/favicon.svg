@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Kelecsényi Léna">
+  <rect width="64" height="64" rx="18" fill="#fdf9f4"/>
+  <circle cx="46" cy="18" r="9" fill="#f5c030"/>
+  <path d="M18 44c10-2 19-11 22-24 2 14-3 24-15 30-3 1-6-1-7-6Z" fill="#7558c0"/>
+  <path d="M18 44c7-1 13-6 17-14" fill="none" stroke="#c9883a" stroke-width="3" stroke-linecap="round"/>
+</svg>

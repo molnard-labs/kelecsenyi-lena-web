@@ -1,0 +1,26 @@
+---
+import { nav, site } from "../data/site";
+
+interface Props {
+  lang: "hu" | "en";
+}
+
+const { lang } = Astro.props;
+const items = nav[lang];
+const languageHref = lang === "hu" ? "/en/" : "/";
+const languageLabel = lang === "hu" ? "EN" : "HU";
+---
+
+<header class="sticky top-0 z-30 border-b border-[var(--border)] bg-lena-bg/90 backdrop-blur-md">
+  <div class="container-page flex min-h-16 items-center justify-between gap-4">
+    <a class="font-display text-[1.35rem] font-light tracking-[0.07em] text-lena-gold" href={lang === "hu" ? "/" : "/en/"}>
+      * {site.nameHu}
+    </a>
+    <nav class="hidden items-center gap-9 text-[0.82rem] font-normal uppercase tracking-[0.14em] text-lena-soft md:flex" aria-label="Primary">
+      {items.map((item) => <a class="transition-colors hover:text-lena-gold" href={item.href}>{item.label}</a>)}
+    </nav>
+    <a class="rounded-md border border-[var(--border)] bg-white/70 px-4 py-2 text-xs font-medium tracking-[0.14em] text-lena-soft transition-colors hover:text-lena-gold" href={languageHref}>
+      {languageLabel}
+    </a>
+  </div>
+</header>

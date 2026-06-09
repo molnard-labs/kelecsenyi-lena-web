@@ -1,0 +1,8 @@
+dist/
+node_modules/
+.astro/
+.vite/
+.vite-build/
+.local-bin/
+.npm-cache/
+.npm-tmp/

@@ -1,0 +1,144 @@
+---
+import { site } from "../data/site";
+
+interface Props {
+  lang: "hu" | "en";
+}
+
+const { lang } = Astro.props;
+const isHu = lang === "hu";
+const labels = {
+  email: isHu ? "Email cím" : "Email address",
+  birthDate: isHu ? "Születési dátum" : "Birth date",
+  birthPlace: isHu ? "Születési hely" : "Birth place",
+  birthTime: isHu ? "Pontos születési idő" : "Exact birth time",
+  handedness: isHu ? "Jobbkezes vagy balkezes" : "Right or left-handed",
+  format: isHu ? "Konzultáció módja" : "Consultation format",
+  message: isHu ? "Rövid üzenet / kérdés" : "Short message / question",
+};
+---
+
+<section class="bg-[linear-gradient(180deg,var(--bg)_0%,var(--bg-lilac)_52%,var(--bg)_100%)] py-16 md:py-24">
+  <div class="container-page grid gap-8 lg:grid-cols-[0.88fr_1.12fr]">
+    <aside class="tinted-panel p-6 md:p-8">
+      <p class="eyebrow">{isHu ? "Sorselemzés" : "Chart reading"}</p>
+      <h1 class="section-heading mt-4 text-lena-text">
+        {isHu ? <>Jelentkezés<br /><em>sorselemzésre</em></> : <>Apply for a<br /><em>chart reading</em></>}
+      </h1>
+      <p class="mt-5 leading-8 text-lena-soft">
+        {
+          isHu
+            ? "Töltsd ki az adatokat, majd az oldal előkészít egy emailt Lenának. Az időpont egyeztethető emailben vagy a 30 perces Calendly híváson keresztül."
+            : "Fill in your details and this page will prepare an email to Léna. Timing can be arranged by email or through the 30-minute Calendly call."
+        }
+      </p>
+      <dl class="mt-7 grid gap-3">
+        <div class="rounded-md border border-[var(--border)] bg-white p-4">
+          <dt class="text-xs font-medium uppercase tracking-[0.16em] text-lena-gold">{isHu ? "Díj" : "Fee"}</dt>
+          <dd class="mt-1 font-display text-3xl font-light">30 000 Ft</dd>
+        </div>
+        <div class="rounded-md border border-[var(--border)] bg-white p-4">
+          <dt class="text-xs font-medium uppercase tracking-[0.16em] text-lena-gold">{isHu ? "Időtartam" : "Duration"}</dt>
+          <dd class="mt-1 font-display text-3xl font-light">60 {isHu ? "perc" : "minutes"}</dd>
+        </div>
+      </dl>
+      <div class="mt-6 rounded-md border border-[var(--border)] bg-white/75 p-4 text-sm leading-7 text-lena-soft">
+        <p>{isHu ? "Személyes találkozó: módosítás legkésőbb 48 órával előtte." : "In-person meeting: changes at least 48 hours in advance."}</p>
+        <p>{isHu ? "Online találkozó: módosítás legkésőbb 24 órával előtte." : "Online meeting: changes at least 24 hours in advance."}</p>
+      </div>
+      <a class="btn btn-secondary mt-6 w-full" href={site.calendly} target="_blank" rel="noreferrer">
+        {isHu ? "30 perces ingyenes hívás foglalása" : "Book a free 30-minute call"}
+      </a>
+    </aside>
+
+    <form class="soft-panel p-6 md:p-8" data-application-form data-lang={lang}>
+      <div class="grid gap-5 md:grid-cols-2">
+        <label class="field-label md:col-span-2">
+          {labels.email}
+          <input class="field-control" type="email" name="email" required />
+        </label>
+        <label class="field-label">
+          {labels.birthDate}
+          <input class="field-control" type="date" name="birthDate" required />
+        </label>
+        <label class="field-label">
+          {labels.birthTime}
+          <input class="field-control" type="time" name="birthTime" required />
+        </label>
+        <label class="field-label md:col-span-2">
+          {labels.birthPlace}
+          <input class="field-control" type="text" name="birthPlace" required />
+        </label>
+        <label class="field-label">
+          {labels.handedness}
+          <select class="field-control" name="handedness" required>
+            <option value="">{isHu ? "Válassz" : "Choose"}</option>
+            <option>{isHu ? "Jobbkezes" : "Right-handed"}</option>
+            <option>{isHu ? "Balkezes" : "Left-handed"}</option>
+          </select>
+        </label>
+        <label class="field-label">
+          {labels.format}
+          <select class="field-control" name="format" required>
+            <option value="">{isHu ? "Válassz" : "Choose"}</option>
+            <option>{isHu ? "Személyesen" : "In person"}</option>
+            <option>{isHu ? "Online" : "Online"}</option>
+          </select>
+        </label>
+        <label class="field-label md:col-span-2">
+          {labels.message}
+          <textarea class="field-control min-h-32" name="message"></textarea>
+        </label>
+      </div>
+      <button class="btn btn-primary mt-7 w-full sm:w-auto" type="submit">
+        {isHu ? "Email előkészítése" : "Prepare email"}
+      </button>
+      <p class="mt-4 text-sm leading-6 text-lena-soft">
+        {
+          isHu
+            ? "A gomb az email alkalmazásodat nyitja meg az űrlap adataival előtöltve."
+            : "The button opens your email app with the form details filled in."
+        }
+      </p>
+    </form>
+  </div>
+</section>
+
+<script define:vars={{ recipient: site.email }}>
+  const forms = document.querySelectorAll("[data-application-form]");
+
+  forms.forEach((form) => {
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const currentForm = event.currentTarget;
+      if (!(currentForm instanceof HTMLFormElement)) return;
+
+      const data = new FormData(currentForm);
+      const lang = currentForm.dataset.lang;
+      const isHu = lang === "hu";
+      const subject = isHu ? "Jelentkezés sorselemzésre" : "Application for chart reading";
+      const rows = isHu
+        ? [
+            ["Email cím", data.get("email")],
+            ["Születési dátum", data.get("birthDate")],
+            ["Pontos születési idő", data.get("birthTime")],
+            ["Születési hely", data.get("birthPlace")],
+            ["Jobbkezes vagy balkezes", data.get("handedness")],
+            ["Konzultáció módja", data.get("format")],
+            ["Rövid üzenet / kérdés", data.get("message")],
+          ]
+        : [
+            ["Email address", data.get("email")],
+            ["Birth date", data.get("birthDate")],
+            ["Exact birth time", data.get("birthTime")],
+            ["Birth place", data.get("birthPlace")],
+            ["Right or left-handed", data.get("handedness")],
+            ["Consultation format", data.get("format")],
+            ["Short message / question", data.get("message")],
+          ];
+
+      const body = rows.map(([label, value]) => `${label}: ${value || "-"}`).join("\n");
+      window.location.href = `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    });
+  });
+</script>

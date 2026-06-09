@@ -1,0 +1,15 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Hero from "../../components/Hero.astro";
+import HomeSections from "../../components/HomeSections.astro";
+import { site } from "../../data/site";
+---
+
+<BaseLayout
+  lang="en"
+  title={`${site.nameHu} | ${site.titleEn}`}
+  description="Self-awareness mentoring and astrological consultation with Kelecsényi Léna, in person or online."
+>
+  <Hero lang="en" />
+  <HomeSections lang="en" />
+</BaseLayout>
