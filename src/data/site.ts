@@ -8,7 +8,7 @@ export const site = {
   phoneMachine: "+36704256216",
   location: "Budapest, Hungary",
   calendly: "https://calendly.com/kelecsenyi-lena/30min",
-  url: "https://lenakelecsenyi.hu",
+  url: "https://kelecsenyilena.hu",
   socials: [
     {
       id: "instagram",

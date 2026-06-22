@@ -37,8 +37,7 @@ Vizuális referencia:
 - Instagram: `https://www.instagram.com/kelecsenyi.lena/`
 - TikTok: `https://www.tiktok.com/@kelecsenyi.lena`
 - Facebook: `https://www.facebook.com/kelecsenyi.lena`
-- Domain: meg nincs
-- Ideiglenes domain placeholder: `lenakelecsenyi.hu`
+- Végleges domain: `kelecsenyilena.hu`
 
 ## Oldalstruktura
 
@@ -49,7 +48,7 @@ Vizuális referencia:
 - `/contact.vcf` - letoltheto vCard
 - `public/nfc-card-url.txt` - kesobbi NFC irashoz
 
-Az NFC tagre kesobb a vegleges domainnel kepzett `/cardurl/` URL keruljon.
+Az NFC tagre a `https://kelecsenyilena.hu/cardurl/` URL keruljon.
 
 Alapertelmezett redirect:
 
@@ -147,7 +146,7 @@ Kerulendo:
 - A design kepek nelkul is teljesnek tunjon.
 - Magyar + angol szovegek elso verziojat az implementacio kesziti.
 - GitHub remote es Cloudflare Pages bekotes dokumentalt kezi lepes legyen.
-- Domain meg nincs, ezert a site URL ideiglenesen placeholder legyen.
+- A site URL végleges értéke `https://kelecsenyilena.hu`.
 
 ## Javasolt implementacio
 
@@ -172,8 +171,7 @@ Javasolt komponensek:
 
 Javasolt konfiguracio:
 
-- `astro.config.mjs` `site` erteke ideiglenesen `https://lenakelecsenyi.hu`
-- README-ben legyen jelezve, hogy vegleges domain utan ezt cserelni kell.
+- `astro.config.mjs` `site` erteke `https://kelecsenyilena.hu`
 
 ## vCard tartalom
 
@@ -188,13 +186,13 @@ TITLE:Önismereti mentor és asztrológus
 ROLE:Self-awareness mentor and astrologer
 TEL;TYPE=CELL:+36704256216
 EMAIL;TYPE=INTERNET:kelecsenyi.lena@gmail.com
-URL:https://lenakelecsenyi.hu
+URL:https://kelecsenyilena.hu
 ADR;TYPE=WORK:;;;Budapest;;;Hungary
 NOTE:Önismereti mentor és asztrológus. Instagram: https://www.instagram.com/kelecsenyi.lena/
 END:VCARD
 ```
 
-Domain elesites utan az URL-t frissiteni kell.
+Az URL a végleges domainre van beállítva.
 
 ## GitHub es Cloudflare Pages
 

@@ -2,6 +2,36 @@
 
 Statikus Astro + Tailwind weboldal Kelecsényi Lénának, Cloudflare Pages deploy mintához.
 
+Az új WordPress-változat a `wordpress/` mappában található. Az Astro oldal
+változatlan tartalmi és vizuális referenciaként marad meg.
+
+## WordPress fejlesztés
+
+Előfeltétel: Docker Desktop.
+
+```powershell
+Copy-Item wordpress/.env.example wordpress/.env
+powershell -ExecutionPolicy Bypass -File wordpress/scripts/bootstrap.ps1
+```
+
+- Weboldal: http://localhost:8080
+- Admin: http://localhost:8080/wp-admin
+- A helyi admin belépési adatokat a `wordpress/.env` tartalmazza.
+
+Leállítás:
+
+```powershell
+docker compose --env-file wordpress/.env -f wordpress/compose.yaml down
+```
+
+Teljes lokális újratelepítés:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File wordpress/scripts/reset.ps1
+```
+
+Részletes dokumentáció: `wordpress/README.md`.
+
 ## Fejlesztés
 
 ```bash
@@ -36,18 +66,7 @@ A build output: `dist/`.
 5. Output directory: `dist`
 6. Production branch: `main`
 
-## Domain élesítés után frissítendő
+## Végleges domain
 
-Az ideiglenes site URL: `https://lenakelecsenyi.hu`.
-
-Végleges domain után frissítsd:
-
-- `astro.config.mjs` `site` értékét
-- `public/contact.vcf` URL mezőjét
-- `public/nfc-card-url.txt` tartalmát
-
-Az NFC tagre a végleges URL kerüljön:
-
-```text
-https://<vegleges-domain>/cardurl/
-```
+- Weboldal: `https://kelecsenyilena.hu`
+- NFC/QR belépési pont: `https://kelecsenyilena.hu/cardurl/`

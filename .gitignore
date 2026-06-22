@@ -6,3 +6,7 @@ node_modules/
 .local-bin/
 .npm-cache/
 .npm-tmp/
+wordpress/.env
+wordpress/backups/
+wordpress/uploads/
+wordpress/.deploy/

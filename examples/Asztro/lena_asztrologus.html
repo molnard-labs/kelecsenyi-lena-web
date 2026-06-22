@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kelecsenyi Léna | Asztrológus</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:     #fdf9f4;
+      --bg2:    #f5edfc;
+      --bg3:    #fff4eb;
+      --purple: #7558c0;
+      --purple2:#4a2d9c;
+      --gold:   #c9883a;
+      --gold-l: #e8b55a;
+      --sun:    #f5c030;
+      --text:   #2a1550;
+      --text2:  #604880;
+      --muted:  #a090c8;
+      --card:   #ffffff;
+      --border: rgba(117,88,192,0.14);
+      --shadow: 0 4px 28px rgba(100,70,180,0.09);
+      --rose:   #e0748e;
+    }
+    *{margin:0;padding:0;box-sizing:border-box;}
+    html{scroll-behavior:smooth;font-size:17px;}
+    body{background:var(--bg);color:var(--text);font-family:'Jost',sans-serif;font-weight:300;overflow-x:hidden;font-size:1rem;line-height:1.7;}
+
+    /* SPARKLES */
+    #sparkles{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;overflow:hidden;}
+    .spark{position:absolute;border-radius:50%;animation:twinkle var(--d,4s) ease-in-out infinite var(--delay,0s);}
+    @keyframes twinkle{0%,100%{opacity:.15;transform:scale(1)}50%{opacity:.85;transform:scale(1.4)}}
+
+    /* NAV */
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.1rem 2.5rem;display:flex;align-items:center;justify-content:space-between;background:rgba(253,249,244,.88);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);}
+    .nav-logo{font-family:'Cormorant Garamond',serif;font-size:1.35rem;color:var(--gold);letter-spacing:.07em;}
+    .nav-links{display:flex;gap:2.5rem;list-style:none;}
+    .nav-links a{color:var(--text2);text-decoration:none;font-size:.92rem;letter-spacing:.1em;text-transform:uppercase;transition:color .3s;}
+    .nav-links a:hover{color:var(--gold);}
+
+    /* HERO */
+    .hero{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;z-index:1;padding:6rem 1.5rem 3rem;background:radial-gradient(ellipse at 50% 35%,#fff8ee 0%,#f3e8ff 55%,#fde9f5 100%);}
+    .hero-ring{position:absolute;width:500px;height:500px;border-radius:50%;border:1.5px solid rgba(201,136,58,.22);animation:rotate 44s linear infinite;}
+    .hero-ring::before{content:'';position:absolute;inset:-32px;border-radius:50%;border:1px solid rgba(117,88,192,.1);}
+    .hero-ring::after{content:'';position:absolute;inset:-64px;border-radius:50%;border:1px solid rgba(201,136,58,.07);}
+    @keyframes rotate{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+    .hero-dot{position:absolute;width:8px;height:8px;border-radius:50%;background:var(--gold);top:0;left:50%;transform:translateX(-50%);box-shadow:0 0 14px var(--gold);}
+    .hero-content{position:relative;z-index:2;max-width:700px;}
+    .hero-eyebrow{font-size:.88rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:1.5rem;}
+    .hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(3.2rem,7.5vw,6rem);font-weight:300;line-height:1.06;color:var(--text);margin-bottom:1.2rem;}
+    .hero h1 em{font-style:italic;color:var(--purple);}
+    .hero-sub{font-size:1.08rem;color:var(--text2);line-height:1.9;max-width:520px;margin:0 auto 2.5rem;}
+    .btn{display:inline-block;padding:.88rem 2.4rem;border:1.5px solid var(--purple);color:var(--purple);text-decoration:none;font-size:.9rem;letter-spacing:.14em;text-transform:uppercase;transition:all .3s;cursor:pointer;background:transparent;font-family:'Jost',sans-serif;}
+    .btn:hover{background:var(--purple);color:#fff;}
+    .btn-gold{background:var(--gold);border-color:var(--gold);color:#fff;}
+    .btn-gold:hover{background:var(--gold-l);border-color:var(--gold-l);color:#fff;}
+    .hero-scroll{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);color:var(--muted);font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;animation:bounce 2.2s ease-in-out infinite;}
+    @keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(8px)}}
+
+    /* SECTIONS */
+    section{position:relative;z-index:1;padding:6rem 1.5rem;}
+    .section-inner{max-width:1100px;margin:0 auto;}
+    .section-label{font-size:.82rem;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);margin-bottom:.9rem;display:block;}
+    .section-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,4.5vw,3.3rem);font-weight:300;line-height:1.2;margin-bottom:1.5rem;color:var(--text);}
+    .section-title em{font-style:italic;color:var(--purple);}
+    .divider{width:56px;height:2px;background:linear-gradient(90deg,var(--gold),var(--gold-l));margin:0 auto 2rem;border-radius:2px;}
+
+    /* ABOUT */
+    .about-bg{background:var(--bg);}
+    .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;}
+    .about-image-inner{aspect-ratio:3/4;background:linear-gradient(145deg,#f5e8ff 0%,#ffe8d6 100%);border-radius:8px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;border:1px solid var(--border);}
+    .about-symbol{font-size:7rem;opacity:.18;}
+    .about-badge{position:absolute;bottom:-1.5rem;right:-1.5rem;background:var(--gold);color:#fff;padding:1.1rem 1.4rem;text-align:center;border-radius:4px;box-shadow:var(--shadow);}
+    .about-badge .num{font-family:'Cormorant Garamond',serif;font-size:2.4rem;display:block;line-height:1;}
+    .about-badge .lbl{font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;}
+    .about-text{color:var(--text2);line-height:1.95;font-size:1.05rem;}
+    .about-text p+p{margin-top:1.1rem;}
+    .about-text strong{color:var(--text);font-weight:500;}
+    .stats{display:flex;gap:2.5rem;margin-top:2.5rem;}
+    .stat-item .num{font-family:'Cormorant Garamond',serif;font-size:2.6rem;color:var(--gold);display:block;line-height:1;}
+    .stat-item .lbl{font-size:.88rem;color:var(--muted);letter-spacing:.06em;}
+
+    /* SERVICES */
+    .services-bg{background:var(--bg2);}
+    .services-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.8rem;margin-top:3rem;}
+    .service-card{background:var(--card);border:1.5px solid var(--border);padding:2.6rem 2.2rem;position:relative;transition:transform .3s,border-color .3s,box-shadow .3s;border-radius:6px;box-shadow:var(--shadow);}
+    .service-card:hover{transform:translateY(-6px);border-color:var(--gold);box-shadow:0 12px 40px rgba(201,136,58,.14);}
+    .service-card.featured{border-color:var(--gold);box-shadow:0 8px 32px rgba(201,136,58,.18);}
+    .service-tag{position:absolute;top:-1px;right:2rem;background:var(--gold);color:#fff;font-size:.78rem;letter-spacing:.12em;padding:.28rem .85rem;text-transform:uppercase;border-radius:0 0 4px 4px;}
+    .service-icon{font-size:2.2rem;margin-bottom:1.4rem;display:block;}
+    .service-card h3{font-family:'Cormorant Garamond',serif;font-size:1.7rem;margin-bottom:.7rem;font-weight:400;color:var(--text);}
+    .service-card p{color:var(--text2);font-size:1rem;line-height:1.85;margin-bottom:1.4rem;}
+    .service-price{font-family:'Cormorant Garamond',serif;font-size:2rem;color:var(--gold);display:block;margin-bottom:.3rem;}
+    .service-duration{font-size:.88rem;color:var(--muted);letter-spacing:.07em;}
+    .service-features{list-style:none;margin:1.2rem 0 1.8rem;}
+    .service-features li{font-size:.95rem;color:var(--text2);padding:.44rem 0;border-bottom:1px solid rgba(117,88,192,.07);display:flex;gap:.6rem;align-items:center;}
+    .service-features li::before{content:'✦';color:var(--gold);font-size:.65rem;flex-shrink:0;}
+
+    /* CALCULATOR */
+    .calc-bg{background:linear-gradient(180deg,var(--bg) 0%,var(--bg2) 50%,var(--bg) 100%);}
+    .calc-intro{text-align:center;max-width:600px;margin:0 auto 3rem;color:var(--text2);line-height:1.8;}
+    .calc-box{background:var(--card);border:1.5px solid var(--border);padding:2.5rem;max-width:820px;margin:0 auto;border-radius:10px;box-shadow:var(--shadow);}
+    .calc-form{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.2rem;margin-bottom:.6rem;}
+    .form-group{display:flex;flex-direction:column;gap:.4rem;}
+    .form-group label{font-size:.82rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);}
+    .form-group input,.form-group select{background:#faf8ff;border:1.5px solid var(--border);color:var(--text);padding:.8rem 1rem;font-family:'Jost',sans-serif;font-size:1rem;outline:none;transition:border-color .3s;width:100%;border-radius:5px;}
+    .form-group input:focus,.form-group select:focus{border-color:var(--purple);}
+    .tz-chip{display:inline-flex;align-items:center;gap:.5rem;background:#f5eeff;border:1px solid var(--border);padding:.55rem 1.1rem;border-radius:20px;font-size:.9rem;color:var(--text2);margin-bottom:1.2rem;cursor:pointer;transition:border-color .3s;}
+    .tz-chip:hover{border-color:var(--purple);}
+    .tz-chip .tz-icon{color:var(--gold);}
+    .tz-override{display:none;animation:fadeIn .3s ease;}
+    .calc-actions{display:flex;gap:1rem;align-items:center;flex-wrap:wrap;margin-top:1.2rem;}
+
+    /* RESULTS */
+    #result-box{display:none;margin-top:2rem;animation:fadeIn .5s ease;}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+    .result-header{text-align:center;margin-bottom:2rem;padding-bottom:1.4rem;border-bottom:1px solid var(--border);}
+    .result-name{font-family:'Cormorant Garamond',serif;font-size:1.9rem;color:var(--purple);}
+    .result-date{font-size:.9rem;color:var(--muted);margin-top:.3rem;}
+    .planets-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.1rem;}
+    .planet-card{background:#faf8ff;border:1.5px solid var(--border);padding:1.3rem 1rem;text-align:center;transition:border-color .3s,box-shadow .3s,transform .3s;border-radius:8px;cursor:default;}
+    .planet-card:hover{border-color:var(--gold);box-shadow:0 6px 20px rgba(201,136,58,.12);transform:translateY(-2px);}
+    .planet-card.special{border-color:rgba(117,88,192,.3);background:#f8f4ff;}
+    .planet-symbol{font-size:2.1rem;display:block;margin-bottom:.3rem;line-height:1;}
+    .planet-name{font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:.4rem;}
+    .planet-sign{font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:var(--text);font-weight:400;}
+    .planet-deg{font-size:.84rem;color:var(--muted);margin-bottom:.35rem;}
+    .planet-house{font-size:.8rem;color:var(--purple);letter-spacing:.06em;margin-bottom:.35rem;}
+    .planet-interp{font-size:.82rem;color:var(--text2);font-style:italic;line-height:1.45;margin-top:.3rem;border-top:1px solid var(--border);padding-top:.4rem;}
+    .result-cta{text-align:center;margin-top:2rem;padding-top:1.5rem;border-top:1px solid var(--border);}
+    .result-cta p{font-size:1rem;color:var(--text2);margin-bottom:1rem;}
+
+    /* TESTIMONIALS */
+    .testi-bg{background:var(--bg3);}
+    .testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3rem;}
+    .testi-card{background:var(--card);border:1.5px solid var(--border);padding:2rem;border-radius:8px;box-shadow:var(--shadow);}
+    .testi-stars{color:var(--gold);font-size:1rem;margin-bottom:1rem;}
+    .testi-text{font-family:'Cormorant Garamond',serif;font-size:1.18rem;font-style:italic;color:var(--text);line-height:1.8;margin-bottom:1.2rem;}
+    .testi-author{font-size:.87rem;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;}
+
+    /* CONTACT */
+    .contact-bg{background:var(--bg2);}
+    .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start;}
+    .contact-info{color:var(--text2);}
+    .contact-info p{line-height:1.85;margin-bottom:2rem;}
+    .contact-items{display:flex;flex-direction:column;gap:1.2rem;}
+    .contact-item{display:flex;gap:1rem;align-items:center;}
+    .contact-item-icon{width:44px;height:44px;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:1rem;flex-shrink:0;border-radius:6px;background:var(--card);}
+    .contact-item-text{font-size:1.02rem;color:var(--text2);}
+    .contact-item-text a{color:var(--text);text-decoration:none;transition:color .3s;}
+    .contact-item-text a:hover{color:var(--gold);}
+    .cform{display:flex;flex-direction:column;gap:1rem;}
+    .cform input,.cform textarea,.cform select{background:var(--card);border:1.5px solid var(--border);color:var(--text);padding:.88rem 1rem;font-family:'Jost',sans-serif;font-size:1rem;outline:none;width:100%;transition:border-color .3s;border-radius:6px;}
+    .cform input:focus,.cform textarea:focus{border-color:var(--purple);}
+    .cform textarea{height:120px;resize:vertical;}
+    .cform-note{font-size:.84rem;color:var(--muted);}
+
+    /* FOOTER */
+    footer{background:var(--bg);border-top:1px solid var(--border);padding:3rem 1.5rem;text-align:center;position:relative;z-index:1;}
+    .footer-logo{font-family:'Cormorant Garamond',serif;font-size:1.75rem;color:var(--gold);margin-bottom:1rem;}
+    .footer-links{display:flex;gap:2rem;justify-content:center;list-style:none;margin-bottom:1.4rem;}
+    .footer-links a{color:var(--muted);text-decoration:none;font-size:.88rem;letter-spacing:.1em;text-transform:uppercase;transition:color .3s;}
+    .footer-links a:hover{color:var(--gold);}
+    .footer-copy{font-size:.84rem;color:var(--muted);}
+    .social-links{display:flex;gap:1rem;justify-content:center;margin-bottom:1.4rem;}
+    .social-links a{width:38px;height:38px;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--muted);text-decoration:none;transition:all .3s;font-size:.85rem;border-radius:6px;}
+    .social-links a:hover{border-color:var(--gold);color:var(--gold);}
+
+    /* Responsive */
+    @media(max-width:900px){
+      .about-grid,.contact-grid{grid-template-columns:1fr;}
+      .services-grid{grid-template-columns:1fr;}
+      .testi-grid{grid-template-columns:1fr;}
+      .about-badge{right:0;}
+      .planets-grid{grid-template-columns:repeat(2,1fr);}
+    }
+    @media(max-width:600px){
+      nav{padding:1rem 1.5rem;}
+      .nav-links{display:none;}
+      .calc-form{grid-template-columns:1fr;}
+      .planets-grid{grid-template-columns:repeat(2,1fr);}
+      .stats{flex-direction:column;gap:1.2rem;}
+      .calc-actions{flex-direction:column;align-items:stretch;}
+      .calc-actions .btn{text-align:center;}
+    }
+  </style>
+</head>
+<body>
+
+<div id="sparkles"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">✦ Kelecsenyi Léna</div>
+  <ul class="nav-links">
+    <li><a href="#rolam">Rólam</a></li>
+    <li><a href="#szolgaltatasok">Konzultáció</a></li>
+    <li><a href="#kalkulator">Horoszkóp</a></li>
+    <li><a href="#kapcsolat">Kapcsolat</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-ring"><div class="hero-dot"></div></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">♈ ♉ ♊ ♋ ♌ ♍ ♎ ♏ ♐ ♑ ♒ ♓</p>
+    <h1>Az égbolt<br>üzenetei <em>neked</em></h1>
+    <p class="hero-sub">Személyes asztrológiai konzultáció, ami segít megérteni, kik vagyunk, hová tartunk, és miért éppen most történik az, ami történik.</p>
+    <a href="#kalkulator" class="btn btn-gold">Számold ki a horoszkópodat</a>
+    &nbsp;&nbsp;
+    <a href="#szolgaltatasok" class="btn">Konzultáció foglalása</a>
+  </div>
+  <div class="hero-scroll">↓ Görgess</div>
+</section>
+
+<!-- ABOUT -->
+<section id="rolam" class="about-bg">
+  <div class="section-inner">
+    <div class="about-grid">
+      <div>
+        <div class="about-image-inner">
+          <div class="about-symbol">☀️</div>
+        </div>
+        <div class="about-badge">
+          <span class="num">5+</span>
+          <span class="lbl">év tapasztalat</span>
+        </div>
+      </div>
+      <div>
+        <span class="section-label">Rólam</span>
+        <h2 class="section-title">Léna vagyok,<br><em>asztrológus</em></h2>
+        <div class="about-text">
+          <p>Az asztrológia nem a sors meghatározása – hanem a <strong>belső térkép megismerése</strong>. Évek óta hiszem, hogy a születési horoszkóp az egyik leghitelesebb tükör, amelyet magunk elé tarthatunk.</p>
+          <p>Konzultációim során nem általános jóslatokat adok, hanem <strong>személyre szabott elemzést</strong>: megnézzük a bolygók elhelyezkedését, az életedben jelenleg aktív tranzitokat, és azt, hogy mindez hogyan kapcsolódik a valóságodhoz.</p>
+          <p>Hiszem, hogy az asztrológia legfőbb értéke az <strong>önismeret mélyítése</strong>. Minden konzultáció más – mert te is egyedi vagy.</p>
+        </div>
+        <div class="stats">
+          <div class="stat-item"><span class="num">200+</span><span class="lbl">konzultáció</span></div>
+          <div class="stat-item"><span class="num">12</span><span class="lbl">asztrológiai témakör</span></div>
+          <div class="stat-item"><span class="num">∞</span><span class="lbl">egyedi horoszkóp</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="szolgaltatasok" class="services-bg">
+  <div class="section-inner">
+    <div style="text-align:center;margin-bottom:1rem;">
+      <span class="section-label">Konzultáció</span>
+      <h2 class="section-title">Válaszd ki a <em>számodra</em><br>megfelelő csomagot</h2>
+      <div class="divider"></div>
+    </div>
+    <div class="services-grid">
+      <div class="service-card">
+        <span class="service-icon">🌙</span>
+        <h3>Alap konzultáció</h3>
+        <p>Bevezetés a születési horoszkópodba: a Nap, a Hold és az Aszcendens mélyebb megismerése. Ideális első alkalom.</p>
+        <span class="service-price">12 000 Ft</span>
+        <span class="service-duration">45 perc · online/személyes</span>
+        <ul class="service-features">
+          <li>Nap–Hold–Aszcendens elemzés</li>
+          <li>Legfontosabb erősségek</li>
+          <li>Írásos összefoglaló</li>
+        </ul>
+        <a href="#kapcsolat" class="btn" style="display:block;text-align:center;">Foglalás</a>
+      </div>
+      <div class="service-card featured">
+        <div class="service-tag">Legnépszerűbb</div>
+        <span class="service-icon">☀️</span>
+        <h3>Teljes születési térkép</h3>
+        <p>A születési horoszkóp teljes elemzése: bolygók, házak, aspektusok – és hogy mindez mit jelent az életedben most.</p>
+        <span class="service-price">24 000 Ft</span>
+        <span class="service-duration">90 perc · online/személyes</span>
+        <ul class="service-features">
+          <li>Mind a 10 bolygó részletes elemzése</li>
+          <li>Házrendszer és aspektusok</li>
+          <li>Aktuális tranzitok</li>
+          <li>Részletes írásos anyag</li>
+          <li>Felvétel az ülésről</li>
+        </ul>
+        <a href="#kapcsolat" class="btn btn-gold" style="display:block;text-align:center;">Foglalás</a>
+      </div>
+      <div class="service-card">
+        <span class="service-icon">🔮</span>
+        <h3>Éves előrejelzés</h3>
+        <p>Milyen lehetőségeket és kihívásokat hoz a következő 12 hónap? Szolárrevoluciós és tranzit elemzés.</p>
+        <span class="service-price">20 000 Ft</span>
+        <span class="service-duration">75 perc · online/személyes</span>
+        <ul class="service-features">
+          <li>Szolárrevoluciós térkép</li>
+          <li>Fontosabb tranzitok hónapra bontva</li>
+          <li>Fókuszterületek az évre</li>
+          <li>Írásos összefoglaló</li>
+        </ul>
+        <a href="#kapcsolat" class="btn" style="display:block;text-align:center;">Foglalás</a>
+      </div>
+      <div class="service-card">
+        <span class="service-icon">🌱</span>
+        <h3>Asztrológiai coaching</h3>
+        <p>Rendszeres, személyes kísérés a horoszkóp mint iránytű segítségével. Együtt dolgozunk a céljaidon, a változásokon és önmagad mélyebb megértésén – hónapról hónapra.</p>
+        <span class="service-price">15 000 Ft / alkalom</span>
+        <span class="service-duration">60 perc · ajánlott: 4-alkalomos csomag</span>
+        <ul class="service-features">
+          <li>Havi 1–2 ülés, folyamatos kísérés</li>
+          <li>Aktuális tranzitok és élethelyzet összekapcsolása</li>
+          <li>Célok és fejlődési területek meghatározása</li>
+          <li>Házi feladatok, gyakorlatok között az ülések között</li>
+          <li>Felvétel az ülésről</li>
+        </ul>
+        <a href="#kapcsolat" class="btn" style="display:block;text-align:center;">Foglalás</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CALCULATOR -->
+<section id="kalkulator" class="calc-bg">
+  <div class="section-inner">
+    <div class="calc-intro">
+      <span class="section-label">Ingyenes eszköz</span>
+      <h2 class="section-title" style="text-align:center;">Születési <em>horoszkóp</em><br>számítás</h2>
+      <div class="divider"></div>
+      <p>Add meg a születési adataidat, és másodpercek alatt megkapod a bolygók elhelyezkedését és rövid jellemzésüket. A mély elemzéshez foglalj konzultációt!</p>
+    </div>
+
+    <div class="calc-box">
+      <div class="calc-form">
+        <div class="form-group">
+          <label>Születési dátum</label>
+          <input type="date" id="bDate" value="1990-03-15" onchange="autoTz()">
+        </div>
+        <div class="form-group">
+          <label>Születési idő</label>
+          <input type="time" id="bTime" value="14:30">
+        </div>
+        <div class="form-group">
+          <label>Születési helyszín</label>
+          <select id="bCity" onchange="cityChanged()">
+            <option value="47.4979,19.0402,HU">Budapest</option>
+            <option value="47.9025,19.7497,HU">Miskolc</option>
+            <option value="46.253,20.1414,HU">Szeged</option>
+            <option value="47.0979,17.9087,HU">Veszprém</option>
+            <option value="47.6866,17.6348,HU">Győr</option>
+            <option value="46.0727,18.2335,HU">Pécs</option>
+            <option value="47.5405,21.6497,HU">Debrecen</option>
+            <option value="47.6825,16.5859,HU">Sopron</option>
+            <option value="48.1,20.7833,HU">Eger</option>
+            <option value="48.2082,16.3738,AT">Bécs</option>
+            <option value="48.8566,2.3522,FR">Párizs</option>
+            <option value="51.5074,-0.1278,GB">London</option>
+            <option value="40.7128,-74.006,US">New York</option>
+            <option value="34.0522,-118.2437,US">Los Angeles</option>
+            <option value="0,0,XX">— Kézi bevitel —</option>
+          </select>
+        </div>
+        <div class="form-group" id="manualLatGroup" style="display:none;">
+          <label>Szélességi fok (É)</label>
+          <input type="number" id="bLat" placeholder="pl. 47.50" step="0.01">
+        </div>
+        <div class="form-group" id="manualLonGroup" style="display:none;">
+          <label>Hosszúsági fok (K/N +/-)</label>
+          <input type="number" id="bLon" placeholder="pl. 19.04" step="0.01">
+        </div>
+      </div>
+
+      <!-- AUTO TIMEZONE CHIP -->
+      <div id="tzChip" class="tz-chip" onclick="toggleTzOverride()">
+        <span class="tz-icon">🕐</span>
+        <span id="tzLabel">Időzóna: számítás folyamatban…</span>
+        <span style="color:var(--muted);font-size:.65rem;margin-left:.3rem;">▾ módosít</span>
+      </div>
+      <div class="tz-override" id="tzOverride">
+        <div class="form-group" style="max-width:280px;margin-bottom:1rem;">
+          <label>Manuális időzóna (UTC+)</label>
+          <select id="bTzManual">
+            <option value="-12">UTC −12</option><option value="-11">UTC −11</option><option value="-10">UTC −10</option>
+            <option value="-9">UTC −9</option><option value="-8">UTC −8</option><option value="-7">UTC −7</option>
+            <option value="-6">UTC −6</option><option value="-5">UTC −5 (New York télen)</option><option value="-4">UTC −4 (New York nyáron)</option>
+            <option value="-3">UTC −3</option><option value="-2">UTC −2</option><option value="-1">UTC −1</option>
+            <option value="0">UTC ±0 (London télen)</option><option value="1" id="opt_p1">UTC +1 (Budapest télen – CET)</option>
+            <option value="2" id="opt_p2">UTC +2 (Budapest nyáron – CEST)</option><option value="3">UTC +3</option>
+            <option value="4">UTC +4</option><option value="5">UTC +5</option><option value="5.5">UTC +5:30 (India)</option>
+            <option value="6">UTC +6</option><option value="7">UTC +7</option><option value="8">UTC +8 (Kína)</option>
+            <option value="9">UTC +9 (Japán)</option><option value="10">UTC +10</option><option value="11">UTC +11</option><option value="12">UTC +12</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="calc-actions">
+        <button class="btn btn-gold" onclick="calcChart()">✦ Horoszkóp számítása</button>
+        <button class="btn" id="astroSeekBtn" style="display:none;" onclick="openAstroSeek()">Teljes térkép az AstroSeek-en ↗</button>
+      </div>
+
+      <div id="result-box">
+        <div class="result-header">
+          <div class="result-name" id="resultTitle">Születési Horoszkóp</div>
+          <div class="result-date" id="resultSubtitle"></div>
+        </div>
+        <div class="planets-grid" id="planetsGrid"></div>
+        <div class="result-cta">
+          <p>Ez csak egy gyors pillantás az égi térképedre. A teljes elemzéshez – aspektusok, házak, tranzitok – foglalj személyes konzultációt!</p>
+          <a href="#kapcsolat" class="btn btn-gold">Konzultációt szeretnék</a>
+          &nbsp;
+          <button class="btn" onclick="openAstroSeek()">Teljes chart az AstroSeek-en ↗</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testi-bg">
+  <div class="section-inner">
+    <div style="text-align:center;margin-bottom:1rem;">
+      <span class="section-label">Visszajelzések</span>
+      <h2 class="section-title">Mit mondanak <em>ügyfeleim</em></h2>
+      <div class="divider"></div>
+    </div>
+    <div class="testi-grid">
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">„Léna olyan dolgokat mondott, amiket senki más nem látott meg bennem. Végre megértettem, miért reagálok úgy a kapcsolatokban, ahogy szokásom."</p>
+        <span class="testi-author">— Zsófi, 32 · Budapest</span>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">„Az éves előrejelzés után pontosan tudtam, mikor érdemes lépni és mikor várni. Az idei évem a legjobb lett az elmúlt öt közül."</p>
+        <span class="testi-author">— Attila, 38 · Debrecen</span>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">„Szkeptikusan ültem be, kétkedve jöttem ki – és teljesen meggondoltam magam. Léna profizmusát és empátiáját csak együtt lehet dicsérni."</p>
+        <span class="testi-author">— Orsolya, 27 · Pécs</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="kapcsolat" class="contact-bg">
+  <div class="section-inner">
+    <div class="contact-grid">
+      <div class="contact-info">
+        <span class="section-label">Kapcsolat</span>
+        <h2 class="section-title">Foglalj <em>időpontot</em></h2>
+        <p>Minden konzultáció előtt kapsz egy rövid kérdőívet, hogy az ülés a számodra legfontosabb területekre fókuszáljon. Az időpontok online (videóhívás) és személyesen is elérhetők.</p>
+        <div class="contact-items">
+          <div class="contact-item">
+            <div class="contact-item-icon">✉</div>
+            <div class="contact-item-text"><a href="mailto:lena@kelecsenyi.hu">lena@kelecsenyi.hu</a></div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-item-icon">📷</div>
+            <div class="contact-item-text"><a href="https://www.instagram.com/lena.kelecsenyi/" target="_blank">@lena.kelecsenyi</a></div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-item-icon">🔗</div>
+            <div class="contact-item-text"><a href="https://linktr.ee/kelecsenyi.lena" target="_blank">linktr.ee/kelecsenyi.lena</a></div>
+          </div>
+        </div>
+      </div>
+      <form class="cform" onsubmit="submitForm(event)">
+        <input type="text" placeholder="Neved" required>
+        <input type="email" placeholder="E-mail cím" required>
+        <select>
+          <option value="">Melyik csomagot szeretnéd?</option>
+          <option>Alap konzultáció (45 perc – 12 000 Ft)</option>
+          <option>Teljes születési térkép (90 perc – 24 000 Ft)</option>
+          <option>Éves előrejelzés (75 perc – 20 000 Ft)</option>
+          <option>Asztrológiai coaching (60 perc – 15 000 Ft / alkalom)</option>
+          <option>Nem tudom még, szeretném megbeszélni</option>
+        </select>
+        <input type="date" placeholder="Preferált időpont">
+        <textarea placeholder="Üzeneted (nem kötelező)"></textarea>
+        <p class="cform-note">Az adataidat csak az időpontfoglaláshoz használom, harmadik félnek nem adom át.</p>
+        <button type="submit" class="btn btn-gold">Elküldöm a foglalási kérelmet</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">✦ Kelecsenyi Léna</div>
+  <div class="social-links">
+    <a href="https://www.instagram.com/lena.kelecsenyi/" target="_blank">IG</a>
+    <a href="https://linktr.ee/kelecsenyi.lena" target="_blank">🌿</a>
+  </div>
+  <ul class="footer-links">
+    <li><a href="#rolam">Rólam</a></li>
+    <li><a href="#szolgaltatasok">Konzultáció</a></li>
+    <li><a href="#kalkulator">Horoszkóp számítás</a></li>
+    <li><a href="#kapcsolat">Kapcsolat</a></li>
+  </ul>
+  <p class="footer-copy">© 2025 Kelecsenyi Léna · Asztrológus · Minden jog fenntartva</p>
+</footer>
+
+<script>
+/* ── SPARKLES ────────────────────────────── */
+(function(){
+  const c=document.getElementById('sparkles');
+  const colors=['#f5c030','#c9883a','#e8b55a','#b090e0','#f0d080','#e8956d'];
+  for(let i=0;i<140;i++){
+    const s=document.createElement('div'); s.className='spark';
+    const sz=Math.random()*3+0.8;
+    s.style.cssText=`width:${sz}px;height:${sz}px;top:${Math.random()*100}%;left:${Math.random()*100}%;background:${colors[Math.floor(Math.random()*colors.length)]};--d:${(Math.random()*6+2).toFixed(1)}s;--delay:-${(Math.random()*10).toFixed(1)}s;`;
+    c.appendChild(s);
+  }
+})();
+
+/* ── TIMEZONE AUTO-DETECT ─────────────────── */
+// DST rules by country code (simplified – uses modern EU rules for HU/AT/DE/FR/etc.)
+const TZ_BASE = { HU:1, AT:1, DE:1, FR:1, IT:1, ES:1, PL:1, CZ:1, SK:1, RO:2, FI:2, GR:2,
+                  GB:0, PT:0, XX:1, US:-5 };
+const DST_REGION = { HU:'EU', AT:'EU', DE:'EU', FR:'EU', IT:'EU', ES:'EU', PL:'EU', CZ:'EU',
+                     SK:'EU', RO:'EU', FI:'EU', GR:'EU', GB:'EU_0', PT:'EU_0', US:'US' };
+
+function lastSundayOf(year, month1) {
+  // month1: 1-based. new Date(y, m, 0) = last day of month m (1-based trick)
+  const last = new Date(year, month1, 0);
+  return last.getDate() - last.getDay(); // subtract days to reach last Sunday (getDay=0)
+}
+
+function getDstOffset(year, month, day, countryCode) {
+  const base = TZ_BASE[countryCode] ?? 1;
+  const region = DST_REGION[countryCode];
+  if (!region) return base;
+
+  // EU summer time: last Sunday of March (+1hr) to last Sunday of October
+  if (region === 'EU' || region === 'EU_0') {
+    const springDay = lastSundayOf(year, 3);
+    const fallDay   = lastSundayOf(year, 10);
+    let summer = false;
+    if (month > 3 && month < 10) summer = true;
+    else if (month === 3 && day >= springDay) summer = true;
+    else if (month === 10 && day < fallDay)   summer = true;
+    return base + (summer ? 1 : 0);
+  }
+  // US: 2nd Sunday of March to 1st Sunday of November (simplified)
+  if (region === 'US') {
+    const d = new Date(year, 2, 1); // March 1
+    const firstSunMarch = (7 - d.getDay()) % 7 + 1;
+    const springDay = firstSunMarch + 7; // 2nd Sunday
+    const d2 = new Date(year, 10, 1); // November 1
+    const fallDay = (7 - d2.getDay()) % 7 + 1; // 1st Sunday of November
+    let summer = false;
+    if (month > 3 && month < 11) summer = true;
+    else if (month === 3 && day >= springDay) summer = true;
+    else if (month === 11 && day < fallDay)   summer = true;
+    return base + (summer ? 1 : 0);
+  }
+  return base;
+}
+
+let _autoTz = 2; // default
+
+function autoTz() {
+  const dateStr = document.getElementById('bDate').value;
+  const cityVal = document.getElementById('bCity').value;
+  if (!dateStr || cityVal.startsWith('0,0')) return;
+  const parts = cityVal.split(',');
+  const cc = parts[2] || 'HU';
+  const [y,m,d] = dateStr.split('-').map(Number);
+  _autoTz = getDstOffset(y, m, d, cc);
+  const isSummer = _autoTz > (TZ_BASE[cc] ?? 1);
+  const label = `Időzóna: UTC${_autoTz >= 0 ? '+' : ''}${_autoTz} ${
+    cc==='HU'||cc==='AT'||cc==='DE'||cc==='FR' ? (isSummer ? '(CEST – nyári idő)' : '(CET – téli idő)') :
+    cc==='GB'||cc==='PT' ? (isSummer ? '(BST – nyári)' : '(GMT – téli)') :
+    cc==='US' ? (isSummer ? '(EDT)' : '(EST)') : ''
+  } · automatikusan számolva`;
+  document.getElementById('tzLabel').textContent = label;
+  // sync manual dropdown
+  const sel = document.getElementById('bTzManual');
+  for (let i=0;i<sel.options.length;i++) {
+    if (parseFloat(sel.options[i].value) === _autoTz) { sel.selectedIndex = i; break; }
+  }
+}
+
+let _tzOverrideVisible = false;
+function toggleTzOverride() {
+  _tzOverrideVisible = !_tzOverrideVisible;
+  document.getElementById('tzOverride').style.display = _tzOverrideVisible ? 'block' : 'none';
+}
+document.getElementById('bTzManual').addEventListener('change', function(){
+  _autoTz = parseFloat(this.value);
+  document.getElementById('tzLabel').textContent = `Időzóna: UTC${_autoTz>=0?'+':''}${_autoTz} (kézi beállítás)`;
+});
+
+function cityChanged() {
+  const v = document.getElementById('bCity').value;
+  const manual = v.startsWith('0,0');
+  document.getElementById('manualLatGroup').style.display = manual ? 'flex' : 'none';
+  document.getElementById('manualLonGroup').style.display = manual ? 'flex' : 'none';
+  autoTz();
+}
+
+// Initialize timezone chip on load
+window.addEventListener('DOMContentLoaded', () => autoTz());
+
+/* ── ASTRONOMY ────────────────────────────── */
+function toRad(d){return d*Math.PI/180;}
+function toDeg(r){return r*180/Math.PI;}
+function norm360(x){return((x%360)+360)%360;}
+
+function julianDay(year,month,day,hour){
+  if(month<=2){year--;month+=12;}
+  const A=Math.floor(year/100),B=2-A+Math.floor(A/4);
+  return Math.floor(365.25*(year+4716))+Math.floor(30.6001*(month+1))+day+hour/24+B-1524.5;
+}
+function jdToT(jd){return(jd-2451545)/36525;}
+function obliquity(T){return 23.439291111-0.013004167*T-0.0000001639*T*T+0.0000005036*T*T*T;}
+
+function sunLon(T){
+  const L0=norm360(280.46646+36000.76983*T+0.0003032*T*T);
+  const M=norm360(357.52911+35999.05029*T-0.0001537*T*T),Mr=toRad(M);
+  const C=(1.914602-0.004817*T-0.000014*T*T)*Math.sin(Mr)+(0.019993-0.000101*T)*Math.sin(2*Mr)+0.000289*Math.sin(3*Mr);
+  const omega=125.04-1934.136*T;
+  return norm360(L0+C-0.00569-0.00478*Math.sin(toRad(omega)));
+}
+
+function moonLon(T){
+  const t=T;
+  const L=norm360(218.3164477+481267.88123421*t-0.0015786*t*t+t*t*t/538841-t*t*t*t/65194000);
+  const D=norm360(297.8501921+445267.1114034*t-0.0018819*t*t+t*t*t/545868-t*t*t*t/113065000);
+  const M=norm360(357.5291092+35999.0502909*t-0.0001536*t*t+t*t*t/24490000);
+  const Mp=norm360(134.9633964+477198.8675055*t+0.0087414*t*t+t*t*t/69699-t*t*t*t/14712000);
+  const F=norm360(93.2720950+483202.0175233*t-0.0036539*t*t-t*t*t/3526000+t*t*t*t/863310000);
+  return norm360(L+6.288774*Math.sin(toRad(Mp))+1.274027*Math.sin(toRad(2*D-Mp))
+    +0.658314*Math.sin(toRad(2*D))+0.213618*Math.sin(toRad(2*Mp))-0.185116*Math.sin(toRad(M))
+    -0.114332*Math.sin(toRad(2*F))+0.058793*Math.sin(toRad(2*D-2*Mp))+0.057066*Math.sin(toRad(2*D-M-Mp))
+    +0.053322*Math.sin(toRad(2*D+Mp))+0.045758*Math.sin(toRad(2*D-M))-0.040923*Math.sin(toRad(M-Mp))
+    -0.034720*Math.sin(toRad(D))-0.030383*Math.sin(toRad(M+Mp))+0.015327*Math.sin(toRad(2*D-2*F))
+    -0.012528*Math.sin(toRad(Mp+2*F))+0.010980*Math.sin(toRad(Mp-2*F))
+    +0.010675*Math.sin(toRad(4*D-Mp))+0.010034*Math.sin(toRad(3*Mp))+0.008548*Math.sin(toRad(4*D-2*Mp)));
+}
+
+function planetLon(body,T){
+  const el={
+    Mercury:[252.25084,149472.67411,0.20563069,-0.00000027,0.387098, 77.45645, 0.15940],
+    Venus:  [181.97973, 58517.81539,0.00677323, 0.00000014,0.723330,131.53298, 0.00013],
+    Mars:   [355.45332, 19140.30268,0.09341233, 0.00009048,1.523688,336.04084, 0.44441],
+    Jupiter:[ 34.40438,  3034.74612,0.04839266,-0.00000176,5.20260, 14.75385, 0.21581],
+    Saturn: [ 49.94432,  1222.49380,0.05415060,-0.00010360,9.55491, 92.43194,-0.26852],
+    Uranus: [313.23218,   428.48202,0.04716771,-0.00000145,19.21814,170.96424, 0.40849],
+    Neptune:[304.88003,   218.45900,0.00858587, 0.00000002,30.19826, 44.97135,-0.32729],
+    Pluto:  [238.92881,   145.18050,0.24880766, 0.00000006,39.48168,224.06676, 0.00000],
+  };
+  const p=el[body]; if(!p) return 0;
+  const Lp=norm360(p[0]+p[1]*T),ep=p[2]+p[3]*T,aAU=p[4],wp=norm360(p[5]+p[6]*T);
+  const Mp=norm360(Lp-wp),Mpr=toRad(Mp);
+  const Cp=(2*ep-ep*ep*ep/4)*Math.sin(Mpr)+(5/4)*ep*ep*Math.sin(2*Mpr)+(13/12)*ep*ep*ep*Math.sin(3*Mpr);
+  const v=Mp+toDeg(Cp),lon_h=norm360(wp+v),r=aAU*(1-ep*ep)/(1+ep*Math.cos(toRad(v)));
+  const xp=r*Math.cos(toRad(lon_h)),yp=r*Math.sin(toRad(lon_h));
+  const Le=norm360(280.46646+36000.76983*T),Me=norm360(357.52911+35999.05029*T),Mer=toRad(Me);
+  const Ce_e=(1.914602-0.004817*T)*Math.sin(Mer)+0.019993*Math.sin(2*Mer);
+  const sun_geo=norm360(Le+Ce_e),e_hel=norm360(sun_geo+180),Me_v=Me+Ce_e;
+  const r_e=1.00014*(1-0.016710*0.016710)/(1+0.016710*Math.cos(toRad(Me_v)));
+  const xe=r_e*Math.cos(toRad(e_hel)),ye=r_e*Math.sin(toRad(e_hel));
+  return norm360(toDeg(Math.atan2(yp-ye,xp-xe)));
+}
+
+function gmst(jd){
+  const T=(jd-2451545)/36525;
+  return norm360(280.46061837+360.98564736629*(jd-2451545)+0.000387933*T*T-T*T*T/38710000);
+}
+function ascendant(jd,lat,lon){
+  const T=jdToT(jd),LST=norm360(gmst(jd)+lon),eps=obliquity(T),RAMCr=toRad(LST),epsr=toRad(eps),latr=toRad(lat);
+  return norm360(toDeg(Math.atan2(Math.cos(RAMCr),-(Math.sin(RAMCr)*Math.cos(epsr)+Math.tan(latr)*Math.sin(epsr)))));
+}
+function midheaven(jd,lon){
+  const T=jdToT(jd),LST=norm360(gmst(jd)+lon),eps=obliquity(T),LSTr=toRad(LST),epsr=toRad(eps);
+  return norm360(toDeg(Math.atan2(Math.sin(LSTr),Math.cos(LSTr)*Math.cos(epsr))));
+}
+
+/* ── ZODIAC & INTERPRETATIONS ───────────────── */
+const SIGNS=[
+  {name:'Kos',sym:'♈'},{name:'Bika',sym:'♉'},{name:'Ikrek',sym:'♊'},{name:'Rák',sym:'♋'},
+  {name:'Oroszlán',sym:'♌'},{name:'Szűz',sym:'♍'},{name:'Mérleg',sym:'♎'},{name:'Skorpió',sym:'♏'},
+  {name:'Nyilas',sym:'♐'},{name:'Bak',sym:'♑'},{name:'Vízöntő',sym:'♒'},{name:'Halak',sym:'♓'},
+];
+function getSign(lon){return SIGNS[Math.floor(norm360(lon)/30)];}
+function getDeg(lon){return Math.floor(norm360(lon)%30);}
+function equalHouse(pLon,ascLon){return Math.floor(norm360(pLon-ascLon)/30)+1;}
+
+const HOUSE_NAME=['I.','II.','III.','IV.','V.','VI.','VII.','VIII.','IX.','X.','XI.','XII.'];
+const HOUSE_MEANING=['Személyiség','Anyagiak','Kommunikáció','Otthon','Kreativitás','Munka & egészség',
+  'Kapcsolatok','Átalakulás','Bölcsesség','Karrier','Barátok & célok','Belső világ'];
+
+// Planetary interpretations: indexed [0..11] = Kos..Halak
+const INTERP={
+  sun:['Energikus, bátor, pionír személyiség','Kitartó, érzéki, megbízható alap',
+    'Sokoldalú, szellemes, kíváncsi szellem','Gondoskodó, intuitív, erős gyökerei',
+    'Karizmatikus, kreatív, nemes szív','Elemző, precíz, szorgalmas segítő',
+    'Harmóniára törekvő, esztétikus, igazságos','Intenzív, átható, megújuló erő',
+    'Optimista, szabad, bölcsességkereső','Ambiciózus, fegyelmezett, kitartó',
+    'Eredeti, humanista, jövőbe néző','Empatikus, intuitív, álmodozó kreativitás'],
+  moon:['Impulzív, azonnali érzelmi reakciók','Erős biztonságvágy, komfort-kereső',
+    'Változékony hangulat, érzelmi nyitottság','Mély kötődés, anyai gondoskodás',
+    'Drámai érzelmek, elismerésvágy','Részletorientált, gondoskodó aggodalom',
+    'Kapcsolati harmóniára fogékony lélek','Intenzív, titokzatos belső élet',
+    'Pozitív, kalandvágyó érzelmi világ','Visszafogott, belső érzelmi komolyság',
+    'Baráti, szabad, humanista érzelmek','Álmodozó empátia, spirituális nyitottság'],
+  mercury:['Gyors, direkt, szenvedélyes gondolatok','Alapos, lassú, praktikus elme',
+    'Élénk, sokoldalú, szószerető kommunikátor','Intuitív, asszociatív, empatikus gondolkodás',
+    'Kreatív, drámai önkifejezés','Analitikus, kritikus, precíz',
+    'Diplomatikus, kiegyensúlyozott, esztétikus','Kutató, mélyreható, titkokat kereső',
+    'Filozofikus, optimista, nagy képben gondolkodó','Strukturált, ambiciózus, célratörő',
+    'Eredeti, forradalmi, előremutató elme','Intuitív, szimbolikus, álmodozó'],
+  venus:['Szenvedélyes, spontán vonzódás','Érzéki, tartós, anyagias biztonság',
+    'Könnyed, változatos, flörtölős szív','Gyengéd, gondoskodó, otthoni melegség',
+    'Drámai, lojalitás, pompa és ragyogás','Perfekcionista, kritikus, hasznos szerelem',
+    'Harmonikus, esztétikus partneri kapcsolat','Mélységes, transzformáló intimitás',
+    'Kalandos, szabad, aventurózus szerelem','Komoly, hűséges, tartós kötődés',
+    'Baráti alapú, progresszív, szokatlan szerelem','Romantikus, empatikus, misztikus vonzódás'],
+  mars:['Impulzív, energikus, úttörő akció','Kitartó, módszeres, hosszú lélegzetű',
+    'Szellemi energia, gyors cselekvés','Védelmező, érzelmi motiváció',
+    'Büszke, határozott, nemes hajtóerő','Precíz, szervezett, céltudatos',
+    'Diplomatikus, igazságért harcoló','Stratégiai, intenzív, mindent vagy semmit',
+    'Aktív, optimista, kalandkereső','Ambiciózus, fegyelmezett, kitartó erő',
+    'Forradalmi, csoportos cselekvés','Könyörületes, spirituális hajtóerő'],
+  jupiter:['Bátor expanzió, sport és verseny területén','Anyagi gazdagság, praktikus bölcsesség',
+    'Szellemi növekedés, kommunikáció virágzása','Érzelmi bőség, gyökerek gazdagsága',
+    'Kreatív expanzió, vezető és elismert szerep','Munka és egészség területén bővülés',
+    'Kapcsolati bőség, igazságosság és egyensúly','Transzformáción át jövő gazdagság',
+    'Utazás, felsőoktatás, spiritualitás','Karrier és közéleti kibontakozás',
+    'Humanista célok, barátságok bővülése','Spirituális bölcsesség, rejtett kincsek'],
+  saturn:['Önérvényesítés és türelem mély leckéje','Anyagi biztonság megszerzésének tanulása',
+    'Kommunikáció és tanulás lassú, mély útja','Érzelmi korlátok, gyermekkori sebek feldolgozása',
+    'Önkifejezés és elismerés nehéz útja','Munka és egészség korlátainak tanulása',
+    'Kapcsolati elköteleződés mély leckéje','Intimitás és megosztás nehézségei',
+    'Hit és felsőoktatás korlátainak leckéje','Karrier, felelősség és tekintély tanulása',
+    'Csoporthoz tartozás és barátság leckéje','Spirituális és tudatalatti korlátok'],
+  uranus:['Forradalmi egyéniség, úttörő energia','Materiális világ átformálása, újítás',
+    'Gondolkodás és kommunikáció forradalma','Otthon és gyökerek újragondolása',
+    'Kreatív és személyes forradalom','Munkahelyi és egészségügyi reform',
+    'Kapcsolati szabadság és egyenlőség kora','Intimitás és megosztás forradalma',
+    'Hit és felsőoktatás ugrásszerű változása','Karrier és közélet megújítása',
+    'Csoportos forradalom, humanizmus kora','Kollektív spirituális átalakulás'],
+  neptune:['Spirituális idealizmus és érzékenység','Anyagi illúziók és spirituális értékek',
+    'Intuitív kommunikáció, spirituális elme','Mély érzelmi és spirituális érzékenység',
+    'Kreatív és romantikus idealizmus','Gyógyítás és spirituális szolgálat',
+    'Kapcsolati idealizmus, romantikus illúziók','Intimitás spirituális mélységei',
+    'Spirituális keresés és hit illúziói','Karrier spirituális dimenziója',
+    'Humanista és utópikus idealizmus','Kollektív spiritualitás, mélytudatalatti'],
+  pluto:['Ego és önzetlenség mélyreható átalakulása','Materiális értékek radikális átformálása',
+    'Kommunikáció és gondolkodás mély változása','Gyökerek és emlékezet transzformációja',
+    'Kreativitás és önkifejezés radikális változása','Munka és napi rutin megújulása',
+    'Kapcsolatok és igazságosság forradalma','Intimitás és hatalom mélyreható átalakulása',
+    'Hit és felsőoktatás megkérdőjelezése','Karrier és közszereplés transzformációja',
+    'Társadalmi és humanista célok átalakulása','Kollektív tudatalatti megújulása'],
+};
+
+const PLANETS=[
+  {key:'sun',    name:'Nap',       sym:'☉', fn:(jd,T,la,lo)=>sunLon(T)},
+  {key:'moon',   name:'Hold',      sym:'☽', fn:(jd,T,la,lo)=>moonLon(T)},
+  {key:'mercury',name:'Merkúr',    sym:'☿', fn:(jd,T,la,lo)=>planetLon('Mercury',T)},
+  {key:'venus',  name:'Vénusz',    sym:'♀', fn:(jd,T,la,lo)=>planetLon('Venus',T)},
+  {key:'mars',   name:'Mars',      sym:'♂', fn:(jd,T,la,lo)=>planetLon('Mars',T)},
+  {key:'jupiter',name:'Jupiter',   sym:'♃', fn:(jd,T,la,lo)=>planetLon('Jupiter',T)},
+  {key:'saturn', name:'Szaturnusz',sym:'♄', fn:(jd,T,la,lo)=>planetLon('Saturn',T)},
+  {key:'uranus', name:'Uránusz',   sym:'♅', fn:(jd,T,la,lo)=>planetLon('Uranus',T)},
+  {key:'neptune',name:'Neptunusz', sym:'♆', fn:(jd,T,la,lo)=>planetLon('Neptune',T)},
+  {key:'pluto',  name:'Plútó',     sym:'♇', fn:(jd,T,la,lo)=>planetLon('Pluto',T)},
+  {key:'asc',    name:'Aszcendens',sym:'AC',fn:(jd,T,la,lo)=>ascendant(jd,la,lo),special:true},
+  {key:'mc',     name:'MC',        sym:'MC',fn:(jd,T,la,lo)=>midheaven(jd,lo),special:true},
+];
+
+/* ── MAIN CALC ───────────────────────────── */
+let _last={};
+
+function calcChart(){
+  const dateStr=document.getElementById('bDate').value;
+  const timeStr=document.getElementById('bTime').value;
+  const tz = _tzOverrideVisible
+    ? parseFloat(document.getElementById('bTzManual').value)
+    : _autoTz;
+  const cityVal=document.getElementById('bCity').value;
+
+  let lat,lon;
+  if(cityVal.startsWith('0,0')){
+    lat=parseFloat(document.getElementById('bLat').value||0);
+    lon=parseFloat(document.getElementById('bLon').value||0);
+  } else {
+    const parts=cityVal.split(',');
+    lat=parseFloat(parts[0]); lon=parseFloat(parts[1]);
+  }
+  if(!dateStr){alert('Kérlek add meg a születési dátumod!');return;}
+
+  const [year,month,day]=dateStr.split('-').map(Number);
+  const [hour,minute]=(timeStr||'12:00').split(':').map(Number);
+  const hourUT=hour+minute/60-tz;
+
+  const jd=julianDay(year,month,day,hourUT);
+  const T=jdToT(jd);
+
+  _last={day,month,year,hour,minute,tz,lat,lon,
+    cityName:document.getElementById('bCity').options[document.getElementById('bCity').selectedIndex].text.replace(/,.*$/,'')};
+
+  // Compute ascendant first (needed for house calculation)
+  const ascLon = ascendant(jd, lat, lon);
+
+  const results=PLANETS.map(p=>{
+    const l=p.fn(jd,T,lat,lon);
+    const sign=getSign(l), deg=getDeg(l);
+    const signIdx=Math.floor(norm360(l)/30);
+    const house=p.special ? null : equalHouse(l, ascLon);
+    const interp=INTERP[p.key] ? INTERP[p.key][signIdx] : null;
+    return{...p,lon:l,sign,deg,signIdx,house,interp};
+  });
+
+  renderResults(results,dateStr,timeStr,tz);
+}
+
+function renderResults(results,dateStr,timeStr,tz){
+  const box=document.getElementById('result-box');
+  const grid=document.getElementById('planetsGrid');
+  document.getElementById('resultTitle').textContent='Születési Horoszkóp';
+  document.getElementById('resultSubtitle').textContent=`${dateStr} · ${timeStr||'?'} · UTC${tz>=0?'+':''}${tz} · ${_last.cityName||''}`;
+
+  grid.innerHTML='';
+  results.forEach(p=>{
+    const card=document.createElement('div');
+    card.className='planet-card'+(p.special?' special':'');
+    const houseStr=p.house ? `<div class="planet-house">${HOUSE_NAME[p.house-1]} ház · ${HOUSE_MEANING[p.house-1]}</div>` : '';
+    const interpStr=p.interp ? `<div class="planet-interp">${p.interp}</div>` : '';
+    card.innerHTML=`
+      <span class="planet-symbol">${p.sym}</span>
+      <div class="planet-name">${p.name}</div>
+      <div class="planet-sign">${p.sign.sym} ${p.sign.name}</div>
+      <div class="planet-deg">${p.deg}° ${p.sign.name}</div>
+      ${houseStr}
+      ${interpStr}
+    `;
+    grid.appendChild(card);
+  });
+
+  box.style.display='block';
+  document.getElementById('astroSeekBtn').style.display='inline-block';
+  box.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+function openAstroSeek(){
+  const{day,month,year,hour,minute,lat,lon}=_last;
+  if(!year){alert('Előbb számítsd ki a horoszkópot!');return;}
+  const url=`https://horoscopes.astro-seek.com/birth-chart-horoscope-online?`
+    +`narozeni_den=${day}&narozeni_mesic=${month}&narozeni_rok=${year}`
+    +`&narozeni_hodiny=${hour}&narozeni_minuty=${minute}&narozeni_sekundy=0`
+    +`&narozeni_city=&narozeni_mesto_hidden=`
+    +`&narozeni_zemepisna_sirka=${lat}&narozeni_zemepisna_delka=${lon}`
+    +`&house_system=placidus&hid_fortune=1&hid_fortune_check=on`
+    +`&hid_chiron=1&hid_chiron_check=on&submit_button=Radix`;
+  window.open(url,'_blank');
+}
+
+/* ── CONTACT FORM ────────────────────────── */
+function submitForm(e){
+  e.preventDefault();
+  const btn=e.target.querySelector('button[type=submit]');
+  btn.textContent='✓ Kérelem elküldve!';
+  btn.style.background='#2d8a5f'; btn.style.borderColor='#2d8a5f';
+  btn.disabled=true;
+  setTimeout(()=>{
+    btn.textContent='Elküldöm a foglalási kérelmet';
+    btn.style.background=''; btn.style.borderColor='';
+    btn.disabled=false; e.target.reset();
+  },4000);
+}
+</script>
+</body>
+</html>
