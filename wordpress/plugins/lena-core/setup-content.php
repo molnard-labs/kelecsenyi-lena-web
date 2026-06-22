@@ -45,7 +45,7 @@ lena_core_setup_page('cardurl', 'Névjegy átirányítás', '');
 
 update_option('show_on_front', 'page');
 update_option('page_on_front', $home_id);
-update_option('blog_public', 0);
+update_option('blog_public', wp_get_environment_type() === 'production' ? 1 : 0);
 update_option('timezone_string', 'Europe/Budapest');
 update_option('date_format', 'Y. F j.');
 update_option('time_format', 'H:i');

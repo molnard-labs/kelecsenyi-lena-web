@@ -1,11 +1,27 @@
-# Kelecsényi Léna weboldal
+# Kelecsényi Léna WordPress-weboldal
 
-Statikus Astro + Tailwind weboldal Kelecsényi Lénának, Cloudflare Pages deploy mintához.
+Ez a repository kizárólag a `kelecsenyilena.hu` egyedi WordPress-kódját és a
+helyi fejlesztéshez szükséges környezetet tartalmazza.
 
-Az új WordPress-változat a `wordpress/` mappában található. Az Astro oldal
-változatlan tartalmi és vizuális referenciaként marad meg.
+## Tartalom
 
-## WordPress fejlesztés
+- `wordpress/themes/zodiac-astrology-child/` – az aktív egyedi child theme
+- `wordpress/plugins/lena-core/` – események, oldaladatok, NFC/vCard funkciók
+- `wordpress/scripts/` – helyi telepítés és visszaállítás
+- `wordpress/compose.yaml` – helyi WordPress + MariaDB + WP-CLI
+- `deployment/` – később aktiválható GitHub Actions deploy-sablon
+
+A WordPress core, az adatbázis, a médiatár és a titkos adatok nem részei a
+repositorynak.
+
+A `.local/` könyvtár gépen maradó referencia- és archív fájlok helye. Git
+figyelmen kívül hagyja; ide kerülhetnek olyan forrásdokumentumok is, amelyek
+személyes adatot tartalmaznak.
+
+A valódi helyi jelszavak kizárólag a gitignore-olt `wordpress/.env` fájlban
+lehetnek. Az `.env.example` csak egyértelmű helyőrzőket tartalmazhat.
+
+## Helyi indítás
 
 Előfeltétel: Docker Desktop.
 
@@ -14,59 +30,33 @@ Copy-Item wordpress/.env.example wordpress/.env
 powershell -ExecutionPolicy Bypass -File wordpress/scripts/bootstrap.ps1
 ```
 
-- Weboldal: http://localhost:8080
-- Admin: http://localhost:8080/wp-admin
-- A helyi admin belépési adatokat a `wordpress/.env` tartalmazza.
+- Weboldal: `http://localhost:8080`
+- Admin: `http://localhost:8080/wp-admin`
 
-Leállítás:
-
-```powershell
-docker compose --env-file wordpress/.env -f wordpress/compose.yaml down
-```
-
-Teljes lokális újratelepítés:
+Teljes helyi újratelepítés:
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File wordpress/scripts/reset.ps1
 ```
 
-Részletes dokumentáció: `wordpress/README.md`.
+WordPressben feltölthető ZIP-ek készítése:
 
-## Fejlesztés
-
-```bash
-npm install
-npm run dev
+```powershell
+powershell -ExecutionPolicy Bypass -File wordpress/scripts/package.ps1
 ```
 
-## Build
+A csomagok a git által figyelmen kívül hagyott `wordpress/.build/` könyvtárba
+kerülnek.
 
-```bash
-npm run build
-```
-
-A build output: `dist/`.
-
-## Útvonalak
-
-- `/` - magyar főoldal
-- `/en/` - angol főoldal
-- `/sorselemzes-jelentkezes/` - magyar sorselemzés jelentkezés
-- `/en/chart-reading-application/` - angol jelentkezési oldal
-- `/addcontact/` - mobil névjegymentő oldal
-- `/cardurl/` - NFC/QR belépési pont, az `/addcontact/` oldalra továbbít
-- `/contact.vcf` - letölthető vCard
-
-## Cloudflare Pages
-
-1. Hozz létre GitHub repót, például `kelecsenyi-lena-web` néven.
-2. Pushold a projektet a `main` branchre.
-3. Cloudflare Pages-ben hozz létre új projektet GitHub repóból.
-4. Build command: `npm run build`
-5. Output directory: `dist`
-6. Production branch: `main`
-
-## Végleges domain
+## Éles oldal
 
 - Weboldal: `https://kelecsenyilena.hu`
-- NFC/QR belépési pont: `https://kelecsenyilena.hu/cardurl/`
+- WordPress admin: `https://kelecsenyilena.hu/wp-admin/`
+- NFC stabil URL: `https://kelecsenyilena.hu/cardurl/`
+- Névjegyoldal: `https://kelecsenyilena.hu/addcontact/`
+
+## Kiadás
+
+Jelenleg a child theme és a plugin ZIP-fájlként kézzel frissíthető a WordPress
+adminban. A későbbi automatikus GitHub-deploy előkészítése a
+`deployment/README.md` fájlban található; nincs aktív deploy workflow.

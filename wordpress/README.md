@@ -1,42 +1,31 @@
-# Kelecsényi Léna WordPress
-
-## Lokális indítás
-
-```powershell
-Copy-Item .env.example .env
-powershell -ExecutionPolicy Bypass -File scripts/bootstrap.ps1
-```
-
-A bootstrap idempotens: újrafuttatva nem írja felül a szerkesztett oldalakat.
+# WordPress-forrás
 
 ## Szerkezet
 
-- `themes/zodiac-astrology-child`: minden saját vizuális és sablonmódosítás
-- `plugins/lena-core`: események és globális oldaladatok
-- `scripts`: telepítés és kezdőtartalom
-- `compose.yaml`: WordPress, MariaDB és WP-CLI
+- `themes/zodiac-astrology-child` – Kelecsényi Léna egyedi child theme-je
+- `plugins/lena-core` – eseménykezelés, globális oldaladatok, vCard és NFC route
+- `scripts/bootstrap.ps1` – idempotens helyi telepítés
+- `scripts/reset.ps1` – helyi adatbázis és WordPress teljes újraépítése
+- `scripts/package.ps1` – adminban feltölthető theme- és plugin-ZIP készítése
+- `compose.yaml` – WordPress 7.0, PHP 8.3, MariaDB és WP-CLI
 
-## Tartalomszerkesztés
+## Függőség
 
-- `Oldal adatai`: Calendly, elérhetőségek és hero szöveg
-- `Oldalak`: bemutatkozás és konzultáció tartalma
-- `Események`: Facebookhoz hasonló egyszerű eseménylétrehozás
+A child theme szülősablonja a WordPress tárból telepíthető
+`Zodiac Astrology`, könyvtárneve: `zodiac-astrology`.
 
-Az esemény címét, borítóképét és leírását a normál WordPress mezőkben kell megadni.
-Külön csak a kezdés, befejezés, helyszín és opcionális Cooltix-link szerepel.
+## Szerkeszthető tartalom
 
-## Production deploy
+- `Oldal adatai` – Calendly, e-mail, telefon, Instagram és hero szöveg
+- `Oldalak` – bemutatkozás, konzultáció és adatkezelés
+- `Események` – időpont, helyszín, borítókép, leírás és jegylink
 
-A repository csak a child theme-et és a saját plugint telepíti. A WordPress core,
-adatbázis, médiatár és titkok a tárhelyen maradnak.
+## Production
 
-Végleges production URL: `https://kelecsenyilena.hu`.
+Csak az alábbi két könyvtár telepítendő:
 
-Szükséges GitHub Secrets:
+- `wp-content/themes/zodiac-astrology-child`
+- `wp-content/plugins/lena-core`
 
-- `WP_DEPLOY_HOST`
-- `WP_DEPLOY_USER`
-- `WP_DEPLOY_SSH_KEY`
-- `WP_DEPLOY_PATH`
-
-A tárhelyen a `WP_DEPLOY_PATH` a `wp-content` könyvtár abszolút útvonala.
+Az adatbázist, médiatárat, WordPress core-t és `wp-config.php` fájlt deploy
+közben tilos felülírni.

@@ -79,7 +79,7 @@ Invoke-WpCli theme activate zodiac-astrology-child
 Invoke-WpCli plugin activate lena-core
 Invoke-WpCli language core install hu_HU
 Invoke-WpCli site switch-language hu_HU
-Invoke-WpCli eval-file /workspace/scripts/bootstrap-content.php
+Invoke-WpCli eval-file /var/www/html/wp-content/plugins/lena-core/setup-content.php
 
 Write-Host ""
 Write-Host "WordPress: $wpUrl"
