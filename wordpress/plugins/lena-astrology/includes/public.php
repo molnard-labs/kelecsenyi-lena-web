@@ -1,6 +1,6 @@
 <?php
 /**
- * Fixed public routes and bounded Python adapter for the natal-chart demo.
+ * Fixed public routes and bounded Python adapter for the natal-chart application.
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 

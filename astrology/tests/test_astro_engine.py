@@ -1,6 +1,5 @@
-"""Meaningful numerical, historical-clock and loopback API regression checks.
+"""Numerical, historical-clock and place-lookup regression checks.
 
-Run: .venv/Scripts/python.exe -m unittest discover -s tests -v
 The J2000 expected values below were captured from the independent official
 Swiss Ephemeris Windows swetest.exe 2.10.03, Git revision
 c69c14adb7a0f94829586ffd92cd422aacb21e86:
@@ -12,21 +11,14 @@ Legacy public natal references are explicitly identified in their tests.
 from __future__ import annotations
 
 from datetime import datetime, timezone
-from http.client import HTTPConnection
-from http.server import ThreadingHTTPServer
-import io
-import json
 from pathlib import Path
 import sys
-from threading import Thread
 import unittest
 from unittest.mock import patch
-import zipfile
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import astro_engine as engine
 from bootstrap_astro import qualify_duplicate_names
-from preview_server import PreviewHandler
 
 SAMPLE = {"date": "2000-01-01", "time": "13:00", "place_id": "3054643", "house_system": "P"}
 
@@ -240,115 +232,6 @@ class HistoricalTimeTests(unittest.TestCase):
         with self.assertRaises(engine.ChartError) as caught:
             engine.resolve_local_time(datetime(2011, 12, 30, 12), "Pacific/Apia")
         self.assertEqual(caught.exception.code, "nonexistent_time")
-
-
-class APITests(unittest.TestCase):
-    @classmethod
-    def setUpClass(cls):
-        cls.server = ThreadingHTTPServer(("127.0.0.1", 0), PreviewHandler)
-        cls.thread = Thread(target=cls.server.serve_forever, daemon=True)
-        cls.thread.start()
-        cls.port = cls.server.server_port
-        cls.origin = f"http://127.0.0.1:{cls.port}"
-
-    @classmethod
-    def tearDownClass(cls):
-        cls.server.shutdown()
-        cls.server.server_close()
-        cls.thread.join(timeout=3)
-
-    def request(self, method, path, body=None, headers=None):
-        client = HTTPConnection("127.0.0.1", self.port, timeout=10)
-        client.request(method, path, body=body, headers=headers or {})
-        response = client.getresponse()
-        raw, status_code, response_headers = response.read(), response.status, dict(response.getheaders())
-        client.close()
-        return status_code, raw, response_headers
-
-    def post(self, payload, **extra):
-        headers = {"Origin": self.origin, "Content-Type": "application/json", **extra}
-        return self.request("POST", "/api/chart", json.dumps(payload), headers)
-
-    def test_chart_api_response_and_privacy_headers(self):
-        with patch("sys.stderr", new_callable=io.StringIO) as error_log:
-            code, raw, headers = self.post(SAMPLE)
-        self.assertEqual(code, 200)
-        self.assertEqual(len(json.loads(raw)["planets"]), 13)
-        self.assertEqual(headers["Cache-Control"], "no-store")
-        self.assertEqual(headers["Referrer-Policy"], "no-referrer")
-        self.assertNotIn("Access-Control-Allow-Origin", headers)
-        self.assertEqual(error_log.getvalue(), "")
-
-    def test_ambiguous_api_response_and_explicit_choice(self):
-        payload = {**SAMPLE, "date": "2024-10-27", "time": "02:30"}
-        code, raw, headers = self.post(payload)
-        self.assertEqual(code, 422)
-        error = json.loads(raw)["error"]
-        self.assertEqual(error["code"], "ambiguous_time")
-        self.assertEqual([choice["fold"] for choice in error["choices"]], [0, 1])
-        code, raw, headers = self.post({**payload, "fold": 1})
-        self.assertEqual(code, 200)
-        self.assertEqual(json.loads(raw)["input"]["utc"], "2024-10-27T01:30:00Z")
-
-    def test_cross_site_request_and_missing_origin_rejected(self):
-        self.assertEqual(self.post(SAMPLE, Origin="https://example.com")[0], 403)
-        self.assertEqual(self.request("POST", "/api/chart", json.dumps(SAMPLE), {"Content-Type": "application/json"})[0], 403)
-
-    def test_host_rebinding_rejected(self):
-        code, raw, headers = self.request("GET", "/api/status", headers={"Host": "example.com"})
-        self.assertEqual(code, 403)
-
-    def test_malformed_and_oversized_body_rejected(self):
-        headers = {"Origin": self.origin, "Content-Type": "application/json"}
-        self.assertEqual(self.request("POST", "/api/chart", "{", headers)[0], 400)
-        self.assertEqual(self.request("POST", "/api/chart", "x" * 4097, headers)[0], 413)
-        self.assertEqual(self.request("POST", "/api/chart", "{}", {"Origin": self.origin, "Content-Type": "text/plain"})[0], 415)
-
-    def test_sources_data_and_directory_listings_not_served(self):
-        for path in ("/astro_engine.py", "/preview_server.py", "/requirements-astro.txt", "/.venv/pyvenv.cfg",
-                     "/astro-data/places.sqlite", "/astro-data/manifest.json", "/tests/", "/original-assets/",
-                     "/%2e%2e/%2e%2e/.git/config", "/%2evenv/"):
-            with self.subTest(path=path):
-                self.assertEqual(self.request("GET", path)[0], 404)
-
-    def test_status_search_and_existing_frontend(self):
-        self.assertEqual(self.request("GET", "/")[0], 200)
-        code, raw, headers = self.request("GET", "/api/status")
-        self.assertEqual(code, 200)
-        self.assertTrue(json.loads(raw)["offline"])
-        self.assertEqual(json.loads(raw)["preview_app"], "lena-agpl-demo")
-        code, raw, headers = self.request("GET", "/api/places?q=Budapest")
-        self.assertEqual(code, 200)
-        self.assertEqual(json.loads(raw)["places"][0]["id"], "3054643")
-
-    def test_source_offer_get_and_head_are_available_without_birth_data(self):
-        code, raw, headers = self.request("GET", "/source.zip")
-        self.assertEqual(code, 200)
-        self.assertEqual(headers["Content-Type"], "application/zip")
-        self.assertIn("attachment", headers["Content-Disposition"])
-        with zipfile.ZipFile(io.BytesIO(raw)) as archive:
-            names = archive.namelist()
-            self.assertIn("kelecsenyi-lena-web/LICENSE", names)
-            self.assertIn("kelecsenyi-lena-web/demo/astro_engine.py", names)
-            self.assertFalse(any("/astro-data/" in name or "/.local/" in name or "/.venv/" in name for name in names))
-        head_code, head_raw, head_headers = self.request("HEAD", "/source.zip")
-        self.assertEqual(head_code, 200)
-        self.assertEqual(head_raw, b"")
-        self.assertEqual(head_headers["Content-Length"], str(len(raw)))
-        self.assertEqual(head_headers["ETag"], headers["ETag"])
-        self.assertEqual(self.request("GET", "/source.zip", headers={"Host": "example.com"})[0], 403)
-
-    def test_fixed_legal_routes_serve_current_repository_text(self):
-        for route, filename in (("/license.txt", "LICENSE"), ("/third-party-notices.txt", "THIRD_PARTY_NOTICES.md")):
-            with self.subTest(route=route):
-                code, raw, headers = self.request("GET", route)
-                self.assertEqual(code, 200)
-                self.assertEqual(raw, (engine.BASE.parent / filename).read_bytes())
-                self.assertEqual(headers["Content-Type"], "text/plain; charset=utf-8")
-                head_code, head_raw, head_headers = self.request("HEAD", route)
-                self.assertEqual(head_code, 200)
-                self.assertEqual(head_raw, b"")
-                self.assertEqual(head_headers["Content-Length"], str(len(raw)))
 
 
 if __name__ == "__main__":

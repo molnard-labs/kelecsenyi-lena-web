@@ -1,5 +1,5 @@
 {
-  "description": "Synthetic Budapest reference; engine verified by official swetest references in demo/tests.",
+  "description": "Synthetic Budapest reference; engine verified by official swetest references in astrology/tests.",
   "request": {
     "date": "2000-01-01",
     "time": "13:00",

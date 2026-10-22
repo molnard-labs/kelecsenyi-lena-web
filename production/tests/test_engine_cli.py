@@ -20,7 +20,7 @@ ROOT = Path(__file__).resolve().parents[2]
 SPEC = importlib.util.spec_from_file_location("lena_production_cli_test", ROOT / "production" / "engine_cli.py")
 cli = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(cli)
-ENGINE_SPEC = importlib.util.spec_from_file_location("lena_reference_engine_test", ROOT / "demo" / "astro_engine.py")
+ENGINE_SPEC = importlib.util.spec_from_file_location("lena_reference_engine_test", ROOT / "astrology" / "astro_engine.py")
 engine = importlib.util.module_from_spec(ENGINE_SPEC)
 ENGINE_SPEC.loader.exec_module(engine)
 SAMPLE = {"date": "2000-01-01", "time": "13:00", "place_id": "3054643", "house_system": "P"}

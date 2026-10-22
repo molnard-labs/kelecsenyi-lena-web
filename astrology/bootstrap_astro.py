@@ -1,7 +1,7 @@
 """One-time public-data setup. No birth data is read or sent by this script.
 
-Run with .venv/Scripts/python.exe bootstrap_astro.py after installing
-requirements-astro.txt. Runtime calculations subsequently need no network.
+The release build uses the pinned requirements-astro.txt dependencies.
+Runtime calculations subsequently need no network.
 """
 from __future__ import annotations
 
@@ -33,7 +33,7 @@ def normalize(value: str) -> str:
 
 
 def fetch(url: str) -> bytes:
-    with urlopen(Request(url, headers={"User-Agent": "Lena-local-astrology-preview/1.0"}), timeout=90) as response:
+    with urlopen(Request(url, headers={"User-Agent": "Lena-Astrology-Release/1.0"}), timeout=90) as response:
         return response.read()
 
 
