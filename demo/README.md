@@ -26,7 +26,7 @@ A tíz új emblémaváltozat helyi galériája: <http://127.0.0.1:4173/icon-vari
 
 ## Forrás és licencek
 
-A saját szoftver AGPL-3.0-only alatt használható; a pontos hatályt és a külön licencű összetevőket a repó [LICENSE](../LICENSE) és [THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md) fájljai írják le. A kész helyi oldalon a „Forráskód letöltése” hivatkozás az aktuálisan mentett, engedélyezett forrásfájlokból készít ZIP-et. A `/license.txt` és `/third-party-notices.txt` az ugyanehhez a változathoz tartozó jogi szövegeket szolgálja ki. A Python-illesztő és az abba foglalt Swiss Ephemeris forrása a `third-party-src/` mappában található; a rendszerkönyvtárak, a telepítési csomagok és a generált adatbázis nem részei a saját alkalmazás forrásának.
+A saját szoftver AGPL-3.0-only alatt használható; a pontos hatályt és a külön licencű összetevőket a repó [LICENSE](../LICENSE) és [THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md) fájljai írják le. A lábléc „Szoftverlicencek” hivatkozásáról elérhető licencoldalon az aktuálisan mentett, engedélyezett forrásfájlok ZIP-ként letölthetők. A `/license.txt` és `/third-party-notices.txt` az ugyanehhez a változathoz tartozó jogi szövegeket szolgálja ki. A Python-illesztő és az abba foglalt Swiss Ephemeris forrása a `third-party-src/` mappában található; a rendszerkönyvtárak, a telepítési csomagok és a generált adatbázis nem részei a saját alkalmazás forrásának.
 
 Az engedélyezett fájlokat a `source-files.json` sorolja fel egyenként. Új forrás hozzáadásakor ezt a listát is frissíteni kell. A csomagolás nem járja be a repót: nem kerülhet bele `.env`, `.git`, korábbi `.local` prototípus, virtuális környezet, napló, születési adat, GeoNames-adatbázis vagy efemeridagyorsítótár. Kézi csomagkészítés:
 

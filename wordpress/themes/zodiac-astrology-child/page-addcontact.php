@@ -2,7 +2,6 @@
 get_header();
 
 $email = kelecsenyi_lena_option('email');
-$phone = kelecsenyi_lena_option('phone');
 ?>
 <section class="contact-card-page">
     <div class="container">
@@ -19,7 +18,7 @@ $phone = kelecsenyi_lena_option('phone');
             <p class="contact-card-alternative">Vagy lépj kapcsolatba közvetlenül:</p>
             <div class="contact-card-links">
                 <a href="mailto:<?php echo esc_attr($email); ?>"><?php echo esc_html($email); ?></a>
-                <a href="tel:<?php echo esc_attr(preg_replace('/\s+/', '', $phone)); ?>"><?php echo esc_html($phone); ?></a>
+                <?php kelecsenyi_lena_phone_reveal(); ?>
                 <a href="<?php echo esc_url(kelecsenyi_lena_option('instagram')); ?>" target="_blank" rel="noreferrer">Instagram</a>
             </div>
         </div>

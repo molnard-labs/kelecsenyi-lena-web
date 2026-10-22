@@ -13,7 +13,7 @@ if (!defined('ABSPATH')) {
         <div class="col-lg-4">
             <p class="footer-heading"><?php esc_html_e('Kapcsolat', 'kelecsenyi-lena'); ?></p>
             <p><a href="mailto:<?php echo esc_attr(kelecsenyi_lena_option('email')); ?>"><?php echo esc_html(kelecsenyi_lena_option('email')); ?></a></p>
-            <p><a href="tel:<?php echo esc_attr(preg_replace('/\s+/', '', kelecsenyi_lena_option('phone'))); ?>"><?php echo esc_html(kelecsenyi_lena_option('phone')); ?></a></p>
+            <p><?php kelecsenyi_lena_phone_reveal(); ?></p>
         </div>
         <div class="col-lg-3">
             <p class="footer-heading"><?php esc_html_e('Kövess', 'kelecsenyi-lena'); ?></p>
@@ -25,7 +25,7 @@ if (!defined('ABSPATH')) {
         <a href="<?php echo esc_url(home_url('/adatkezelesi-tajekoztato/')); ?>">Adatkezelés</a>
     </div>
     <?php if (function_exists('lena_astrology_public_directory') && is_file(lena_astrology_public_directory() . '/source.zip')) : ?>
-        <p class="container lena-source-offer"><a href="<?php echo esc_url(home_url('/source.zip')); ?>" download>Forráskód letöltése</a> · <a href="<?php echo esc_url(home_url('/licenses.html')); ?>">AGPLv3 és licencek</a></p>
+        <p class="container lena-source-offer"><a href="<?php echo esc_url(home_url('/licenses.html')); ?>">Szoftverlicencek</a></p>
     <?php endif; ?>
 </footer>
 <?php wp_footer(); ?>

@@ -20,7 +20,7 @@ page = re.sub(r'<link\b[^>]*id="kelecsenyi-lena-fonts-css"[^>]*>', '<link rel="s
 page = page.replace('</head>', '<link rel="stylesheet" href="/local-enhancements.css"></head>')
 page = re.sub(r'(<body\b[^>]*>)', r'\1<a class="local-skip-link" href="#hero">Ugrás a tartalomra</a>', page, count=1)
 page = page.replace('</body>', '<script src="/local-enhancements.js"></script></body>')
-page = page.replace('</footer>', '<p class="container local-source-offer"><a href="/source.zip" download="kelecsenyi-lena-demo-forras.zip">Forráskód letöltése</a> · <a href="/licenses.html">AGPLv3 és licencek</a></p></footer>', 1)
+page = page.replace('</footer>', '<p class="container local-source-offer"><a href="/licenses.html">Szoftverlicencek</a></p></footer>', 1)
 page = page.replace('<script src="original-site.js"></script>', '')
 # The captured original DOM contained an inspector host; it has no site purpose.
 page = re.sub(r'<div id="codex-browser-sidebar-comments-root"[^>]*></div>', '', page)

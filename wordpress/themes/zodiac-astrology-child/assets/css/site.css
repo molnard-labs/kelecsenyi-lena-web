@@ -267,9 +267,9 @@ body.intro-passed #masthead {
 .contact-card-save:focus-visible { background: var(--lena-terracotta); box-shadow: 0 12px 28px rgba(180, 106, 83, .24); color: #fff; transform: translateY(-1px); }
 .contact-card-alternative { margin-top: 1.8rem; color: var(--lena-muted); font-size: .82rem; letter-spacing: .05em; }
 .contact-card-links { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; margin-top: .8rem; }
-.contact-card-links a { padding: .9rem 1rem; border: 1px solid var(--lena-gold); border-radius: 8px; background: var(--lena-bg); color: var(--lena-olive); font-weight: 600; transition: background-color 180ms ease, color 180ms ease; }
-.contact-card-links a:last-child { grid-column: 1 / -1; }
-.contact-card-links a:hover { background: var(--lena-gold); color: #fff; }
+.contact-card-links > a { padding: .9rem 1rem; border: 1px solid var(--lena-gold); border-radius: 8px; background: var(--lena-bg); color: var(--lena-olive); font-weight: 600; transition: background-color 180ms ease, color 180ms ease; }
+.contact-card-links > a:last-child { grid-column: 1 / -1; }
+.contact-card-links > a:hover { background: var(--lena-gold); color: #fff; }
 
 #colophon { padding: 4.5rem 0 1.5rem; background: var(--lena-olive); color: rgba(255,255,255,.78); }
 #colophon a:hover { color: #fff; }
@@ -325,7 +325,7 @@ body.intro-passed #masthead {
   .contact-card { padding: 2rem 1.25rem; }
   .contact-card-primary-action { padding: 1rem; }
   .contact-card-links { grid-template-columns: 1fr; }
-  .contact-card-links a:last-child { grid-column: auto; }
+  .contact-card-links > a:last-child { grid-column: auto; }
 }
 @media (max-width: 767px) {
   body { font-size: 16px; }
@@ -341,3 +341,14 @@ body.intro-passed #masthead {
   .portrait-frame { max-width: 330px; padding: 12px; }
   .portrait-frame img, .portrait-placeholder { height: 390px; }
 }
+
+.phone-reveal { display: inline-flex; align-items: center; max-width: 100%; }
+.phone-reveal-button { min-height: 44px; max-width: 100%; padding: .45rem .8rem; border: 1px solid currentColor; border-radius: 7px; background: transparent; color: inherit; font-size: .82rem; font-weight: 500; line-height: 1.4; cursor: pointer; }
+.phone-reveal .phone-reveal-button[hidden] { display: none; }
+.phone-reveal-button:hover { background: rgba(198, 161, 90, .12); }
+.phone-reveal-button:focus-visible, .phone-reveal-link:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
+.phone-reveal-fallback { font-size: .82rem; }
+.contact-card-links > .phone-reveal { display: flex; }
+.contact-card-links .phone-reveal-button, .contact-card-links .phone-reveal-link { display: flex; align-items: center; justify-content: center; width: 100%; padding: .9rem 1rem; border: 1px solid var(--lena-gold); border-radius: 8px; background: var(--lena-bg); color: var(--lena-olive); font-size: inherit; font-weight: 600; text-decoration: underline; }
+.contact-card-links .phone-reveal-button { font-size: .82rem; text-decoration: none; }
+.contact-card-links .phone-reveal-button:hover, .contact-card-links .phone-reveal-link:hover { background: var(--lena-gold); color: #fff; }

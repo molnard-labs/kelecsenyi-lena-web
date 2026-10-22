@@ -1,3 +1,21 @@
+// Reveal contact details only after a deliberate click.
+document.querySelectorAll('[data-phone-reveal]').forEach(button=>{
+  button.hidden=false;
+  button.addEventListener('click',()=>{
+    const payload=button.dataset.phoneReveal||'';
+    if(!/^(?:[0-9a-f]{2}){5,64}$/.test(payload))return;
+    const phone=payload.match(/../g).map(byte=>String.fromCharCode(parseInt(byte,16)^83)).join('');
+    const dial=phone.replace(/[^0-9+]/g,'');
+    if(!/^\+?[0-9]{5,18}$/.test(dial))return;
+    const link=document.createElement('a');
+    link.className='phone-reveal-link';
+    link.href='tel:'+dial;
+    link.textContent=phone;
+    button.replaceWith(link);
+    link.focus();
+  },{once:true});
+});
+
 // Keep the visually hidden original navigation out of the keyboard sequence.
 (() => {
   const header=document.querySelector('#masthead');

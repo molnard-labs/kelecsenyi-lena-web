@@ -81,6 +81,24 @@ function kelecsenyi_lena_option(string $key, string $fallback = ''): string
     return is_string($value) ? $value : $fallback;
 }
 
+function kelecsenyi_lena_phone_reveal(): void
+{
+    $phone = trim(preg_replace('/[^0-9+().\/ -]/', '', kelecsenyi_lena_option('phone')));
+    $dial = preg_replace('/[^0-9+]/', '', $phone);
+    if (!preg_match('/^\+?[0-9]{5,18}$/', $dial)) {
+        return;
+    }
+
+    // Discourage basic HTML address harvesting; this is not access control.
+    $payload = '';
+    foreach (str_split($phone) as $byte) {
+        $payload .= sprintf('%02x', ord($byte) ^ 83);
+    }
+    ?>
+    <span class="phone-reveal" aria-live="polite" aria-atomic="true"><button class="phone-reveal-button" type="button" data-phone-reveal="<?php echo esc_attr($payload); ?>" hidden><?php esc_html_e('Telefonszám megjelenítése', 'kelecsenyi-lena'); ?></button><noscript><span class="phone-reveal-fallback"><?php esc_html_e('Telefonos elérhetőségért írj e-mailt.', 'kelecsenyi-lena'); ?></span></noscript></span>
+    <?php
+}
+
 function kelecsenyi_lena_page(string $slug): ?WP_Post
 {
     $page = get_page_by_path($slug);

@@ -12,3 +12,9 @@
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.quick-reading-cta a{transition:none}}
 .local-source-offer{font-size:.8rem;padding-bottom:1.5rem;color:#4d604a}
 .local-source-offer a{text-decoration:underline;text-underline-offset:.2em}
+.phone-reveal{display:inline-flex;align-items:center;max-width:100%}
+.phone-reveal-button{min-height:44px;max-width:100%;padding:.45rem .8rem;border:1px solid currentColor;border-radius:7px;background:transparent;color:inherit;font-size:.82rem;font-weight:500;line-height:1.4;cursor:pointer}
+.phone-reveal-button[hidden]{display:none}
+.phone-reveal-button:hover{background:rgba(198,161,90,.12)}
+.phone-reveal-button:focus-visible,.phone-reveal-link:focus-visible{outline:2px solid currentColor;outline-offset:4px}
+.phone-reveal-fallback{font-size:.82rem}
