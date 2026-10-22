@@ -83,6 +83,9 @@
   }
   document.addEventListener('visibilitychange', sync);
   reduced.addEventListener('change', sync);
-  new IntersectionObserver(([entry]) => { inView = entry.isIntersecting; sync(); }).observe(intro);
+  // The fixed header covers the final intro strip at the #hero anchor.
+  new IntersectionObserver(([entry]) => { inView = entry.isIntersecting; sync(); }, {
+    rootMargin: '-80px 0px 0px 0px'
+  }).observe(intro);
   sync();
 })();
