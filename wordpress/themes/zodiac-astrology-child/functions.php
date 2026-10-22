@@ -17,19 +17,19 @@ function kelecsenyi_lena_assets(): void
         'kelecsenyi-lena-fonts',
         get_stylesheet_directory_uri() . '/assets/fonts/fonts.css',
         [],
-        (string) filemtime(get_stylesheet_directory() . '/assets/fonts/fonts.css')
+        substr(hash_file('sha256', get_stylesheet_directory() . '/assets/fonts/fonts.css'), 0, 12)
     );
     wp_enqueue_style(
         'kelecsenyi-lena-site',
         get_stylesheet_directory_uri() . '/assets/css/site.css',
         ['zodiac-astrology-style'],
-        file_exists($site_css_path) ? (string) filemtime($site_css_path) : $theme->get('Version')
+        file_exists($site_css_path) ? substr(hash_file('sha256', $site_css_path), 0, 12) : $theme->get('Version')
     );
     wp_enqueue_script(
         'kelecsenyi-lena-site',
         get_stylesheet_directory_uri() . '/assets/js/site.js',
         [],
-        file_exists($site_js_path) ? (string) filemtime($site_js_path) : $theme->get('Version'),
+        file_exists($site_js_path) ? substr(hash_file('sha256', $site_js_path), 0, 12) : $theme->get('Version'),
         true
     );
     $enhancements_path = get_stylesheet_directory() . '/assets/css/enhancements.css';
@@ -37,12 +37,12 @@ function kelecsenyi_lena_assets(): void
         'kelecsenyi-lena-enhancements',
         get_stylesheet_directory_uri() . '/assets/css/enhancements.css',
         ['kelecsenyi-lena-site'],
-        (string) filemtime($enhancements_path)
+        substr(hash_file('sha256', $enhancements_path), 0, 12)
     );
     if (is_front_page()) {
         foreach (['css' => 'style', 'js' => 'script'] as $extension => $type) {
             $relative = '/assets/' . $extension . '/celestial.' . $extension;
-            $version = (string) filemtime(get_stylesheet_directory() . $relative);
+            $version = substr(hash_file('sha256', get_stylesheet_directory() . $relative), 0, 12);
             if ($type === 'style') {
                 wp_enqueue_style('kelecsenyi-lena-celestial', get_stylesheet_directory_uri() . $relative, ['kelecsenyi-lena-enhancements'], $version);
             } else {
