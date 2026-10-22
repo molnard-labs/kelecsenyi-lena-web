@@ -1,0 +1,44 @@
+{
+  "files": [
+    {
+      "path": "fontawesome/fa-brands-400.woff2",
+      "url": "https://raw.githubusercontent.com/FortAwesome/Font-Awesome/7.0.0/webfonts/fa-brands-400.woff2",
+      "replaces": "https://kelecsenyilena.hu/wp-content/themes/zodiac-astrology/webfonts/fa-brands-400.woff2",
+      "license": "SIL-OFL-1.1; see licenses/Font-Awesome-Free-7.0.0-LICENSE.txt",
+      "sha256": "68eb11704f800b5f1dad88110d8407b530552827225089ddd494e5efa327558d",
+      "bytes": 101136
+    },
+    {
+      "path": "fontawesome/fa-regular-400.woff2",
+      "url": "https://raw.githubusercontent.com/FortAwesome/Font-Awesome/7.0.0/webfonts/fa-regular-400.woff2",
+      "replaces": "https://kelecsenyilena.hu/wp-content/themes/zodiac-astrology/webfonts/fa-regular-400.woff2",
+      "license": "SIL-OFL-1.1; see licenses/Font-Awesome-Free-7.0.0-LICENSE.txt",
+      "sha256": "904e99a0e3cc57843b5f475f33e9cfcb72ec64c35eb25e06d1040dcba25744da",
+      "bytes": 18976
+    },
+    {
+      "path": "fontawesome/fa-solid-900.woff2",
+      "url": "https://raw.githubusercontent.com/FortAwesome/Font-Awesome/7.0.0/webfonts/fa-solid-900.woff2",
+      "replaces": "https://kelecsenyilena.hu/wp-content/themes/zodiac-astrology/webfonts/fa-solid-900.woff2",
+      "license": "SIL-OFL-1.1; see licenses/Font-Awesome-Free-7.0.0-LICENSE.txt",
+      "sha256": "3fa0c73c805fd431bcc6651261adaee8771604c199bc2754043eeeb7efea2d84",
+      "bytes": 113108
+    },
+    {
+      "path": "fontawesome/fa-v4compatibility.woff2",
+      "url": "https://raw.githubusercontent.com/FortAwesome/Font-Awesome/7.0.0/webfonts/fa-v4compatibility.woff2",
+      "replaces": "https://kelecsenyilena.hu/wp-content/themes/zodiac-astrology/webfonts/fa-v4compatibility.woff2",
+      "license": "SIL-OFL-1.1; see licenses/Font-Awesome-Free-7.0.0-LICENSE.txt",
+      "sha256": "4d448c5a58cce72a9ff5eb9f09f6e73b652e4ba9183644060af136d9c56d9313",
+      "bytes": 4136
+    },
+    {
+      "path": "owl.video.play.png",
+      "url": "https://raw.githubusercontent.com/OwlCarousel2/OwlCarousel2/2.2.1/dist/assets/owl.video.play.png",
+      "replaces": "https://kelecsenyilena.hu/wp-content/themes/zodiac-astrology/css/owl.video.play.png",
+      "license": "MIT; see licenses/Owl-Carousel-2.2.1-LICENSE.txt",
+      "sha256": "0436045686fddf10ccbbe2568e0cbffb457e7de7d43d1115c0056e81e97149ff",
+      "bytes": 4976
+    }
+  ]
+}

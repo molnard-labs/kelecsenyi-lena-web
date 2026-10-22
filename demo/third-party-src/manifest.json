@@ -1,0 +1,11 @@
+{
+  "package": "pyswisseph",
+  "version": "2.10.3.2",
+  "file": "pyswisseph-2.10.3.2.tar.gz",
+  "url": "https://files.pythonhosted.org/packages/66/a6/db70d67a00dda42ebd033538c086879328f4c17f670eafe8aca2f11abfef/pyswisseph-2.10.3.2.tar.gz",
+  "sha256": "c54c305e83dbd5d2b71e58d8a69d8ee41de24c4d3328ce09e2af860a3537624d",
+  "bytes": 6940913,
+  "metadata_url": "https://pypi.org/pypi/pyswisseph/2.10.3.2/json",
+  "license": "GNU AGPL version 3; original per-file license notices in the unmodified upstream archive control, including any permission to use later versions.",
+  "contents": "Official unmodified source distribution, including Python binding, Swiss Ephemeris C sources and build scripts."
+}

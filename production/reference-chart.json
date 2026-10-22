@@ -1,0 +1,43 @@
+{
+  "description": "Synthetic Budapest reference; engine verified by official swetest references in demo/tests.",
+  "request": {
+    "date": "2000-01-01",
+    "time": "13:00",
+    "place_id": "3054643",
+    "house_system": "P"
+  },
+  "expected": {
+    "julian_day_ut": 2451545.00000411,
+    "longitudes": {
+      "sun": 280.36892286,
+      "moon": 223.32380085,
+      "mercury": 271.88928344,
+      "venus": 241.56579335,
+      "mars": 327.96330571,
+      "jupiter": 25.25308735,
+      "saturn": 40.39566341,
+      "uranus": 314.80918793,
+      "neptune": 303.19301337,
+      "pluto": 251.45477944,
+      "north_node": 123.95402261,
+      "chiron": 251.6176269,
+      "south_node": 303.95402261
+    },
+    "houses": [
+      53.48902759,
+      78.83994132,
+      98.07488628,
+      117.43254909,
+      141.76365386,
+      179.20242049,
+      233.48902759,
+      258.83994132,
+      278.07488628,
+      297.43254909,
+      321.76365386,
+      359.20242049
+    ],
+    "ascendant": 53.48902759,
+    "tolerance_degrees": 1e-06
+  }
+}

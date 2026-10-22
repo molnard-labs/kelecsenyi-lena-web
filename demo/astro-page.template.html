@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="hu">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="referrer" content="no-referrer">
+  <title>Születési képleted – Kelecsényi Léna</title>
+  <meta name="description" content="Ismerd meg a születési képleted néhány alapmotívumát: Nap, Hold és aszcendens, egy rövid magyar önismereti olvasatban.">
+  <link rel="icon" href="/brand-assets/kl-monogram-32.png" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="/brand-assets/kl-monogram-180.png" sizes="180x180">
+  <link rel="stylesheet" href="/astro-assets/fonts.css">
+  <link rel="stylesheet" href="/astro.css">
+  <link rel="stylesheet" href="/astro-wheel.css">
+  <script type="module" src="/astro.js"></script>
+</head>
+<body class="chart-page">
+  <a class="skip-link" href="#main">Ugrás a tartalomra</a>
+  <header class="chart-header">
+    <div class="chart-container header-inner">
+      <a class="chart-brand" href="/" aria-label="Kelecsényi Léna – főoldal">
+        <img src="/brand-assets/kl-monogram-192.png" width="38" height="38" alt="">
+        <span>Kelecsényi Léna</span>
+      </a>
+      <a class="back-link" href="/#hero">Vissza a főoldalra <span aria-hidden="true">↗</span></a>
+    </div>
+  </header>
+  <main id="main">
+    <section class="chart-intro chart-container" aria-labelledby="page-title">
+      <p class="eyebrow">Önismeret asztrológiai szemlélettel</p>
+      <h1 id="page-title">Egy első pillantás<br>a születési képletedre.</h1>
+      <p class="intro-copy">A születésed pillanata egy egyedi égi térképet rajzol.<br class="desktop-break"> Fedezz fel belőle néhány motívumot, amin érdemes elgondolkodnod.</p>
+    </section>
+
+    <section class="chart-container input-layout" aria-label="Születési adatok megadása">
+      <div class="form-panel">
+        <div class="panel-heading"><span class="step-number">01</span><h2>A kiindulópont: te.</h2></div>
+        <p class="form-lead">Add meg a születési adataidat. A helyi időt és az óraátállítást a kiválasztott település alapján vesszük figyelembe.</p>
+        <noscript><p class="form-error">A számításhoz engedélyezett JavaScript szükséges.</p></noscript>
+        <form id="birth-form" novalidate autocomplete="off">
+          <div class="field-row">
+            <div class="field">
+              <label for="birth-date">Születési dátum</label>
+              <input id="birth-date" name="date" type="text" inputmode="numeric" placeholder="ÉÉÉÉ. HH. NN." maxlength="14" spellcheck="false" required aria-describedby="date-help date-error">
+              <span class="field-hint" id="date-help">Csak a számokat írd: 19900521.</span>
+              <span class="field-error" id="date-error"></span>
+            </div>
+            <div class="field">
+              <label for="birth-time">Születési idő</label>
+              <input id="birth-time" name="time" type="text" inputmode="numeric" placeholder="ÓÓ:PP" maxlength="7" spellcheck="false" required aria-describedby="time-help time-error">
+              <span class="field-hint" id="time-help">24 órás idő, négy számjeggyel. Például: 0930.</span>
+              <span class="field-error" id="time-error"></span>
+            </div>
+          </div>
+          <div class="field place-field">
+            <label for="birth-place">Születési hely</label>
+            <input id="birth-place" name="place" type="text" placeholder="Kezdd el beírni a települést…" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="place-options" aria-describedby="place-help place-error" spellcheck="false" required>
+            <ul id="place-options" class="place-options" role="listbox" aria-label="Településjavaslatok" hidden></ul>
+            <span id="place-help" class="field-hint">Válassz a találatok közül; az országot is ellenőrizd.</span>
+            <span id="place-selected" class="place-selected" hidden></span>
+            <span class="field-error" id="place-error"></span>
+            <span id="place-status" class="sr-only" role="status"></span>
+          </div>
+          <details class="form-details">
+            <summary>Nem tudod a pontos születési idődet?</summary>
+            <p>Az aszcendenshez és a házakhoz szükség van az óra és perc ismeretére. Ne írj be találomra időpontot: a születési dokumentumok vagy egy személyes konzultáció segíthetnek a pontosításban.</p>
+          </details>
+          <details class="form-details calculation-options">
+            <summary>Számítási beállítások</summary>
+            <div class="field">
+              <label for="house-system">Házrendszer</label>
+              <select id="house-system" name="house_system"><option value="P">Placidus</option><option value="W">Egészjegyes</option></select>
+              <span class="field-hint">Nyugati, trópusi állatöv. A két rendszer eltérő házpozíciókat adhat.</span>
+            </div>
+          </details>
+          <fieldset id="fold-choice" class="fold-choice" hidden>
+            <legend>Az óraátállítás miatt ez az időpont kétszer fordult elő.</legend>
+            <p>Válaszd ki, melyik időszámítás szerinti idő szerepel a dokumentumaidban.</p>
+            <div id="fold-options"></div>
+          </fieldset>
+          <div id="form-error" class="form-error" role="alert" hidden></div>
+          <button type="submit" class="primary-button" id="calculate-button">Megnézem a képletem <span aria-hidden="true">→</span></button>
+          <p class="privacy-note">Nincs regisztráció. A megadott születési adatokat nem mentjük és nem továbbítjuk külső szolgáltatónak.</p>
+          <div class="form-status" id="form-status" role="status" aria-live="polite"></div>
+        </form>
+      </div>
+
+      <aside class="reading-intro" aria-labelledby="reading-intro-title">
+        <p class="eyebrow">A képleted első rétegei</p>
+        <h2 id="reading-intro-title">Három nézőpont.<br>Egy személyesebb kép.</h2>
+        <ol class="reading-points">
+          <li><span class="reading-index">I.</span><div><h3>Nap</h3><p>Önkifejezés, belső irány és az, amiben kibontakozhatsz.</p></div></li>
+          <li><span class="reading-index">II.</span><div><h3>Hold</h3><p>Érzelmi ritmus, kapcsolódás és a biztonság megélése.</p></div></li>
+          <li><span class="reading-index">III.</span><div><h3>Aszcendens</h3><p>Ahogyan elindulsz, jelen vagy és találkozol a világgal.</p></div></li>
+        </ol>
+        <p class="reading-footnote">Ez egy rövid, automatikus olvasat. A teljes képlet összefüggései egy személyes beszélgetésben tudnak igazán kibomlani.</p>
+      </aside>
+    </section>
+
+    <section id="chart-result" class="chart-container chart-result" hidden aria-labelledby="result-title" aria-busy="false">
+      <div class="result-header">
+        <div><p class="eyebrow">A te égi térképed</p><h2 id="result-title" tabindex="-1">A képleted első motívumai</h2><p id="result-birth" class="result-birth"></p></div>
+        <button type="button" id="edit-data" class="text-button">Adatok módosítása <span aria-hidden="true">↑</span></button>
+      </div>
+      <div id="chart-wheel"></div>
+      <aside class="consultation-quick" aria-label="Személyes konzultáció">
+        <p>A képletedről, személyesen.<span>Nézzük meg együtt a számodra fontos összefüggéseket.</span></p>
+        <a href="https://calendly.com/kelecsenyi-lena/30min" target="_blank" rel="noreferrer" class="primary-button consultation-button">Egyéni konzultáció <span aria-hidden="true">↗</span></a>
+      </aside>
+      <div id="main-triad" class="main-triad"></div>
+      <div class="result-deeper">
+        <article class="reflection-panel"><p class="eyebrow">Ami összekapcsolódik</p><h3 id="synthesis-title"></h3><p id="synthesis-copy"></p><blockquote id="reflection-question"></blockquote></article>
+        <article class="node-panel"><p class="eyebrow">Fejlődési irány</p><h3 id="node-title"></h3><p id="node-copy"></p></article>
+      </div>
+      <div id="aspects-reading" class="aspects-reading"></div>
+      <aside class="consultation-invitation">
+        <div><p class="eyebrow">A képlet mögött ott vagy te</p><h3>A részletekből együtt lesz összefüggés.</h3><p>Ha szeretnéd a saját élethelyzetedhez kapcsolni ezeket a motívumokat, egy személyes konzultáción továbbmehetünk.</p></div>
+        <a href="https://calendly.com/kelecsenyi-lena/30min" target="_blank" rel="noreferrer" class="primary-button consultation-button">Egyéni konzultáció <span aria-hidden="true">↗</span></a>
+      </aside>
+      <div class="result-actions"><button type="button" id="clear-data" class="text-button">Adatok és eredmény törlése</button><span>Újratöltéskor az eredmény nem marad meg.</span></div>
+      <details class="positions-details" id="positions-details">
+        <summary>A kiszámított pozíciók és a módszer</summary>
+        <div class="positions-content">
+          <p id="calculation-meta"></p>
+          <div class="table-scroll"><table><caption>Bolygók és képletpontok</caption><thead><tr><th scope="col">Égitest / pont</th><th scope="col">Jegy</th><th scope="col">Pozíció a jegyben</th><th scope="col">Ház</th><th scope="col">Mozgás</th></tr></thead><tbody id="positions-body"></tbody></table></div>
+          <div class="table-scroll"><table><caption>Házcsúcsok</caption><thead><tr><th scope="col">Ház</th><th scope="col">Jegy</th><th scope="col">Pozíció a jegyben</th></tr></thead><tbody id="houses-body"></tbody></table></div>
+          <p class="calculation-credits">Főfényszögek: együttállás és szembenállás 7°, kvadrát és trigon 6°, szextil 4° megengedett eltéréssel. Az olvasat legfeljebb két, Napot vagy Holdat érintő kapcsolatot emel ki. A házpozíciók az ekliptikai hosszúság és a házcsúcsok alapján készülnek, értelmezési átsorolás nélkül.</p>
+          <p class="calculation-credits">Számítás: <a href="https://www.astro.com/swisseph/" target="_blank" rel="noreferrer">Swiss Ephemeris, Astrodienst</a>. Települések és időzónák: <a href="https://www.geonames.org/" target="_blank" rel="noreferrer">GeoNames</a>, CC BY 4.0; IANA időzóna-adatbázis. Az értelmező szöveg saját magyar összefoglaló, nem Griga Zsuzsanna könyvének idézete vagy hitelesített módszertana.</p>
+        </div>
+      </details>
+    </section>
+
+    <section class="chart-container method-section" aria-labelledby="method-title">
+      <div><p class="eyebrow">Jó tudni</p><h2 id="method-title">Pontos adatokból<br>érdemes elindulni.</h2></div>
+      <div class="method-faq">
+        <details><summary>Miért számít a születési idő és a hely?</summary><p>Az aszcendens és a házak a földrajzi helyhez és a születés pillanatához kötődnek. Már néhány perc eltérés is módosítja a fokértékeket; jegyhatár közelében a besorolás is változhat. A helykereső a település központjának koordinátáit használja.</p></details>
+        <details><summary>Hogyan készül a számítás és az értelmezés?</summary><p>A Swiss Ephemeris a dátumból, a helyi időből és a koordinátákból számítja az égi pozíciókat. A trópusi, geocentrikus képlet rövid magyar szövege előre megírt asztrológiai motívumokat kapcsol az eredményhez. A csillagászati számítás pontossága nem igazolja az asztrológiai értelmezés tudományos érvényességét.</p></details>
+        <details><summary>Milyen településeket és dátumokat használhatok?</summary><p>1900-tól a mai napig számolhatsz. A helyi atlasz világszerte tartalmaz településeket, Magyarországról kisebb helységeket is. Történelmi helységnév helyett próbáld a mai nevet; ha nincs találat, ne válassz találomra másik várost. Régi időzóna-adatoknál, különösen 1970 előtt, lehetnek történeti bizonytalanságok.</p></details>
+        <details><summary>Mi történik az adataimmal?</summary><p>A számítást az ezen a gépen futó helyi szerver végzi. A születési adatokat nem tesszük az URL-be, nem tároljuk, és nem küldjük asztrológiai vagy AI-szolgáltatónak. Az űrlap törölhető; az oldal újratöltésével az eredmény is eltűnik.</p></details>
+      </div>
+    </section>
+  </main>
+  <footer class="chart-footer"><div class="chart-container footer-inner"><div><a href="/" class="footer-brand">Kelecsényi Léna</a><p>Önismereti mentor és asztrológus</p></div><a href="/#tudnivalok">Kapcsolat</a><span>© 2026 Kelecsényi Léna</span></div><p class="chart-container source-credits">Pozíciószámítás: <a href="https://www.astro.com/swisseph/" target="_blank" rel="noreferrer">Swiss Ephemeris, Astrodienst</a> · Településadatok: <a href="https://www.geonames.org/" target="_blank" rel="noreferrer">GeoNames</a>, <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noreferrer">CC BY 4.0</a>.</p><p class="chart-container source-credits"><a href="/source.zip" download="kelecsenyi-lena-demo-forras.zip">Forráskód letöltése</a> · <a href="/licenses.html">AGPLv3 és licencek</a></p></footer>
+</body>
+</html>

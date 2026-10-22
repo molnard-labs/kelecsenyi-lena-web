@@ -1,0 +1,14 @@
+.section-label{color:#8a682f}
+#hero a.button-slider[href^="https://calendly.com/"]{background:#e5d4b2;border-color:#ad8c4d;color:#35432f;font-weight:600;box-shadow:0 4px 14px #46564012}
+#hero a.button-slider[href^="https://calendly.com/"]:hover{background:#dcc69c;border-color:#8a682f;color:#303d2a}
+.quick-reading-cta{margin:27px 0 0;text-align:center}
+.quick-reading-cta a{display:inline-flex;align-items:center;justify-content:center;gap:20px;min-height:50px;padding:13px 24px;border:1px solid #9c8859;border-radius:8px;background:#465640;color:#fffaf0;box-shadow:0 6px 18px #4656401a;font-size:13px;font-weight:600;text-decoration:none;letter-spacing:.015em;transition:background .2s,box-shadow .2s}
+.quick-reading-cta a:hover{background:#37472f;color:#fffaf0;box-shadow:0 8px 22px #46564026}
+.quick-reading-cta a:focus-visible{outline:2px solid #465640;outline-offset:5px}
+.lena-skip-link{position:absolute;top:-100px;left:20px;z-index:200;padding:12px 20px;background:#faf8f3;color:#465640}
+.lena-skip-link:focus{top:12px;outline:2px solid #465640}
+#hero{scroll-margin-top:72px}
+@media(max-width:767px){.quick-reading-cta{margin-top:22px}.quick-reading-cta a{font-size:12px;max-width:100%;padding-inline:18px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.quick-reading-cta a{transition:none}}
+.lena-source-offer{font-size:.8rem;padding-bottom:1.5rem;color:rgba(255,255,255,.85)}
+.lena-source-offer a{text-decoration:underline;text-underline-offset:.2em}

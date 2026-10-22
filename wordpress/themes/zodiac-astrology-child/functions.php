@@ -15,9 +15,9 @@ function kelecsenyi_lena_assets(): void
 
     wp_enqueue_style(
         'kelecsenyi-lena-fonts',
-        'https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Manrope:wght@300;400;500;600&display=swap',
+        get_stylesheet_directory_uri() . '/assets/fonts/fonts.css',
         [],
-        null
+        (string) filemtime(get_stylesheet_directory() . '/assets/fonts/fonts.css')
     );
     wp_enqueue_style(
         'kelecsenyi-lena-site',
@@ -32,15 +32,33 @@ function kelecsenyi_lena_assets(): void
         file_exists($site_js_path) ? (string) filemtime($site_js_path) : $theme->get('Version'),
         true
     );
+    $enhancements_path = get_stylesheet_directory() . '/assets/css/enhancements.css';
+    wp_enqueue_style(
+        'kelecsenyi-lena-enhancements',
+        get_stylesheet_directory_uri() . '/assets/css/enhancements.css',
+        ['kelecsenyi-lena-site'],
+        (string) filemtime($enhancements_path)
+    );
+    if (is_front_page()) {
+        foreach (['css' => 'style', 'js' => 'script'] as $extension => $type) {
+            $relative = '/assets/' . $extension . '/celestial.' . $extension;
+            $version = (string) filemtime(get_stylesheet_directory() . $relative);
+            if ($type === 'style') {
+                wp_enqueue_style('kelecsenyi-lena-celestial', get_stylesheet_directory_uri() . $relative, ['kelecsenyi-lena-enhancements'], $version);
+            } else {
+                wp_enqueue_script('kelecsenyi-lena-celestial', get_stylesheet_directory_uri() . $relative, [], $version, true);
+            }
+        }
+    }
 }
 add_action('wp_enqueue_scripts', 'kelecsenyi_lena_assets', 30);
 
 function kelecsenyi_lena_favicons(): void
 {
     $assets = get_stylesheet_directory_uri() . '/assets/images/';
-    echo '<link rel="icon" type="image/png" sizes="32x32" href="' . esc_url($assets . 'lena-favicon-32.png') . '">' . "\n";
-    echo '<link rel="icon" type="image/png" sizes="192x192" href="' . esc_url($assets . 'lena-celestial-icon-192.png') . '">' . "\n";
-    echo '<link rel="apple-touch-icon" href="' . esc_url($assets . 'lena-celestial-icon-192.png') . '">' . "\n";
+    echo '<link rel="icon" type="image/png" sizes="32x32" href="' . esc_url($assets . 'kl-monogram-32.png') . '">' . "\n";
+    echo '<link rel="icon" type="image/png" sizes="192x192" href="' . esc_url($assets . 'kl-monogram-192.png') . '">' . "\n";
+    echo '<link rel="apple-touch-icon" sizes="180x180" href="' . esc_url($assets . 'kl-monogram-180.png') . '">' . "\n";
 }
 add_action('wp_head', 'kelecsenyi_lena_favicons', 2);
 
@@ -50,6 +68,12 @@ function kelecsenyi_lena_setup(): void
     add_image_size('lena-event-card', 720, 460, true);
 }
 add_action('after_setup_theme', 'kelecsenyi_lena_setup');
+
+function kelecsenyi_lena_analysis_available(): bool
+{
+    // The production adapter enables this only after its backend is configured.
+    return (bool) apply_filters('lena_analysis_available', false);
+}
 
 function kelecsenyi_lena_option(string $key, string $fallback = ''): string
 {

@@ -24,6 +24,9 @@ if (!defined('ABSPATH')) {
         <span>© <?php echo esc_html(wp_date('Y')); ?> <?php bloginfo('name'); ?></span>
         <a href="<?php echo esc_url(home_url('/adatkezelesi-tajekoztato/')); ?>">Adatkezelés</a>
     </div>
+    <?php if (function_exists('lena_astrology_public_directory') && is_file(lena_astrology_public_directory() . '/source.zip')) : ?>
+        <p class="container lena-source-offer"><a href="<?php echo esc_url(home_url('/source.zip')); ?>" download>Forráskód letöltése</a> · <a href="<?php echo esc_url(home_url('/licenses.html')); ?>">AGPLv3 és licencek</a></p>
+    <?php endif; ?>
 </footer>
 <?php wp_footer(); ?>
 </body>

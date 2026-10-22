@@ -9,21 +9,7 @@ $events_url = get_post_type_archive_link('lena_event');
 ?>
 
 <section id="intro" aria-label="<?php esc_attr_e('Kelecsényi Léna', 'kelecsenyi-lena'); ?>">
-    <video
-        class="intro-video"
-        autoplay
-        muted
-        loop
-        playsinline
-        preload="metadata"
-        poster="<?php echo esc_url(get_stylesheet_directory_uri() . '/assets/images/golden-universe-loop-poster-v2.jpg'); ?>"
-        aria-hidden="true"
-    >
-        <source src="<?php echo esc_url(get_stylesheet_directory_uri() . '/assets/video/golden-universe-loop-v2.webm'); ?>" type="video/webm">
-        <source src="<?php echo esc_url(get_stylesheet_directory_uri() . '/assets/video/golden-universe-loop-v2.mp4'); ?>" type="video/mp4">
-    </video>
-    <div class="intro-shade" aria-hidden="true"></div>
-    <h1><?php bloginfo('name'); ?></h1>
+    <?php get_template_part('template-parts/celestial', 'intro'); ?>
 </section>
 
 <section id="hero">
@@ -37,6 +23,9 @@ $events_url = get_post_type_archive_link('lena_event');
                 <a class="btn button-slider" href="<?php echo esc_url($calendly); ?>" target="_blank" rel="noreferrer">Egyéni konzultáció</a>
                 <a class="btn button-slider button-secondary" href="#rolam">Ismerj meg</a>
             </div>
+            <?php if (kelecsenyi_lena_analysis_available()) : ?>
+                <p class="quick-reading-cta"><a href="<?php echo esc_url(home_url('/gyors-elemzes/')); ?>">Kérek egy rövid képletelemzést <span aria-hidden="true">→</span></a></p>
+            <?php endif; ?>
         </div>
     </div>
 </section>

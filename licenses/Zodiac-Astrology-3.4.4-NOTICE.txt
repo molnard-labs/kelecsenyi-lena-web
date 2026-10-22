@@ -1,0 +1,63 @@
+Source: https://kelecsenyilena.hu/wp-content/themes/zodiac-astrology/style.css
+Source: https://kelecsenyilena.hu/wp-content/themes/zodiac-astrology/readme.txt
+Retrieved: 2026-10-22
+
+/*
+Theme Name: Zodiac Astrology
+Theme URI: https://www.theclassictemplates.com/products/free-astrology-wordpress-theme
+Author: classictemplate
+Author URI: https://www.theclassictemplates.com/
+Description:Zodiac Astrology is a thoughtfully designed theme tailored for astrologers, priests, spiritual gurus, and astrological service providers, offering a perfect platform to present horoscope readings, tarot card services, numerology, palmistry, feng shui, zodiac signs, astrology services, psychic readings, birth charts, astrological forecasts, astrology shops, spiritual guidance, esoteric practices, mystic insights, and star sign interpretations. Built with modern HTML5 and CSS3, the theme delivers a clean, sophisticated, and visually appealing design that enhances the presentation of spiritual and astrology-related content. Its user-friendly and highly customizable interface allows anyone to create a professional astrology or horoscope website without requiring coding knowledge, making it accessible even for beginners. Designed with astrologers in mind, it includes all essential sections to showcase services, insights, and offerings effectively. The theme is responsive, lightweight, and optimized for fast loading, ensuring seamless performance across desktops, tablets, and mobile devices. With SEO-friendly structure, it helps improve visibility on search engines and attract a wider audience seeking spiritual guidance. Additionally, it integrates smoothly with essential plugins such as Contact Form 7 for client inquiries, WooCommerce for astrology products or services, and Mailchimp for email communication, making Zodiac Astrology a powerful and reliable solution for building a strong online spiritual presence.
+Version: 3.4.4
+Tested up to: 6.9
+Requires PHP: 5.6
+Requires at least: 5.0
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: zodiac-astrology
+Tags: blog, e-commerce, photography, one-column, two-columns, three-columns, four-columns, grid-layout, left-sidebar, right-sidebar, custom-logo, post-formats, featured-images, full-width-template, custom-colors, editor-style, flexible-header, footer-widgets, wide-blocks, custom-header, translation-ready, custom-background, custom-menu, sticky-post, threaded-comments, rtl-language-support, theme-options
+
+This theme, like WordPress, is licensed under the GPL.
+Use it to make something cool, have fun, and share what you've learned with others.
+
+Zodiac Astrology WordPress Theme has been created by classictemplate (theclassictemplates.com), 2021.
+Zodiac Astrology WordPress Theme is released under the terms of GNU GPL
+*/
+
+== Upstream code resource notices (verbatim extract) ==
+
+
+Zodiac Astrology WordPress Theme, Copyright 2022 classictemplate
+Zodiac Astrology is distributed under the terms of the GNU GPL.
+
+Zodiac Astrology WordPress Theme is derived from Businessweb Plus WordPress Theme, Copyright 2016 GraceThemes(gracethemes.com)
+Businessweb Plus WordPress Theme is distributed under the terms of the GNU GPL
+
+Zodiac Astrology WordPress Theme incorporates code from Twenty Seventeen WordPress Theme, Copyright 2020 Twenty Seventeen WordPress Theme is distributed under the terms of the GNU GPL
+
+Bootstrap
+Bootstrap v5.3.3 (https://getbootstrap.com/)
+Copyright 2011-2024 The Bootstrap Authors
+https://github.com/twbs/bootstrap/releases/download/v5.3.3/bootstrap-5.3.3-dist.zip
+Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
+
+Font-Awesome:
+Font Awesome 4.3.0 by @davegandy - http://fontawesome.io - @fontawesome
+License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)
+
+Owl Carousel
+David Deutsch
+Copyright 2013-2017 David Deutsch
+https://github.com/OwlCarousel2/OwlCarousel2
+License: The MIT License (MIT)
+https://github.com/OwlCarousel2/OwlCarousel2/blob/develop/LICENSE
+
+Webfonts Loader
+https://github.com/WPTT/webfont-loader
+License: https://github.com/WPTT/webfont-loader/blob/master/LICENSE
+
+TGMPA
+GaryJones Copyright (C) 1989, 1991
+https://github.com/TGMPA/TGM-Plugin-Activation/blob/develop/LICENSE.md
+License: GNU General Public License v2.0
+

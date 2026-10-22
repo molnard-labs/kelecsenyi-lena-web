@@ -1,20 +1,20 @@
 document.addEventListener("DOMContentLoaded", () => {
   const intro = document.querySelector("#intro");
+  const header = document.querySelector("#masthead");
+  if (!intro || !header) return;
 
-  if (intro) {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        document.body.classList.toggle("intro-passed", !entry.isIntersecting);
-      },
-      { threshold: 0.08 }
-    );
-    observer.observe(intro);
+  const sync = () => {
+    const visible = intro.getBoundingClientRect().bottom <= 80;
+    document.body.classList.toggle("intro-passed", visible);
+    header.inert = !visible;
+    header.setAttribute("aria-hidden", String(!visible));
+  };
 
-    window.addEventListener("pageshow", () => {
-      document.body.classList.toggle(
-        "intro-passed",
-        window.scrollY > window.innerHeight * 0.8
-      );
-    });
-  }
+  // Match the 72px header offset used by the intro's #hero link.
+  new IntersectionObserver(sync, {
+    rootMargin: "-80px 0px 0px 0px",
+    threshold: 0
+  }).observe(intro);
+  window.addEventListener("pageshow", sync);
+  sync();
 });
