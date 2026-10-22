@@ -108,8 +108,10 @@ for name in ('lena-favicon-32.png', 'lena-celestial-icon-192.png', 'lena-portrai
 for size in (32, 180, 192):
     if not (ROOT / f'brand-assets/kl-monogram-{size}.png').is_file():
         raise FileNotFoundError(f'Missing selected brand asset: kl-monogram-{size}.png')
-page=page.replace('original-assets/lena-favicon-32.png', 'brand-assets/kl-monogram-32.png')
+favicon_version = hashlib.sha256((ROOT / 'brand-assets/kl-monogram-32.png').read_bytes()).hexdigest()[:12]
+page=page.replace('original-assets/lena-favicon-32.png', 'brand-assets/kl-monogram-32.png?v=' + favicon_version)
 page=page.replace('original-assets/lena-celestial-icon-192.png', 'brand-assets/kl-monogram-192.png')
+page=re.sub(r'<link rel="icon"[^>]*sizes="192x192"[^>]*>', '', page)
 page=page.replace('<link rel="apple-touch-icon" href="brand-assets/kl-monogram-192.png">', '<link rel="apple-touch-icon" sizes="180x180" href="brand-assets/kl-monogram-180.png">')
 page=page.replace('<script src="original-site.js"></script>','')
 for asset in ['celestial.css', 'celestial.js']:

@@ -33,6 +33,9 @@ chart = (ROOT / 'astro-page.template.html').read_text(encoding='utf-8')
 for filename in ('astro.css', 'astro-wheel.css', 'astro.js'):
     version = hashlib.sha256((ROOT / filename).read_bytes()).hexdigest()[:10]
     chart = chart.replace('/'+filename+'"', '/'+filename+'?v='+version+'"')
+favicon = 'brand-assets/kl-monogram-32.png'
+version = hashlib.sha256((ROOT / favicon).read_bytes()).hexdigest()[:12]
+chart = chart.replace('/'+favicon+'"', '/'+favicon+'?v='+version+'"')
 (ROOT / 'gyors-elemzes').mkdir(exist_ok=True)
 (ROOT / 'gyors-elemzes/index.html').write_text(chart, encoding='utf-8')
 print('Local homepage CTA and /gyors-elemzes/ built; WordPress sources unchanged.')

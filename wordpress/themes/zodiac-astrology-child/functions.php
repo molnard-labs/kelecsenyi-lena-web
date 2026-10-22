@@ -56,8 +56,8 @@ add_action('wp_enqueue_scripts', 'kelecsenyi_lena_assets', 30);
 function kelecsenyi_lena_favicons(): void
 {
     $assets = get_stylesheet_directory_uri() . '/assets/images/';
-    echo '<link rel="icon" type="image/png" sizes="32x32" href="' . esc_url($assets . 'kl-monogram-32.png') . '">' . "\n";
-    echo '<link rel="icon" type="image/png" sizes="192x192" href="' . esc_url($assets . 'kl-monogram-192.png') . '">' . "\n";
+    $favicon_version = substr(hash_file('sha256', get_stylesheet_directory() . '/assets/images/kl-monogram-32.png'), 0, 12);
+    echo '<link rel="icon" type="image/png" sizes="32x32" href="' . esc_url($assets . 'kl-monogram-32.png?v=' . $favicon_version) . '">' . "\n";
     echo '<link rel="apple-touch-icon" sizes="180x180" href="' . esc_url($assets . 'kl-monogram-180.png') . '">' . "\n";
 }
 add_action('wp_head', 'kelecsenyi_lena_favicons', 2);

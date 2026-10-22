@@ -22,7 +22,7 @@ python -m venv demo/.venv
 
 Főoldal: <http://127.0.0.1:4173/>. Elemzés: <http://127.0.0.1:4173/gyors-elemzes/>. A dátum magyar év–hó–nap, az idő 24 órás formátumú. Gépeléskor csak számokat kell megadni (például `19900521`, `0930`); a pontok és a kettőspont automatikusan megjelennek. A települést a találati listából kell kiválasztani. Nyári/téli óraátállításkor egyes időpontok nem léteznek vagy kétértelműek; az űrlap ezt külön jelzi.
 
-A tíz új emblémaváltozat helyi galériája: <http://127.0.0.1:4173/icon-variations.html>. A képek és a generálásukhoz használt promptok az `icon-variants/` mappában találhatók. A helyi demóban a kiválasztott 03-as, KL monogramos változat jelenik meg a fejlécben és böngészőikonként; optimalizált PNG-méretei a `brand-assets/` mappában vannak. Az éles oldal változatlan.
+A tíz emblémaváltozat helyi galériája: <http://127.0.0.1:4173/icon-variations.html>. A képek és a generálásukhoz használt promptok az `icon-variants/` mappában találhatók. A kiválasztott 03-as KL monogram jelenik meg a fejlécben. A 32 px-es böngészőikon külön, világos hátterű, vastagabb vonalú változat, hogy sötét és világos böngészőfülön is látható legyen; a fejléc 192 px-es képe változatlan. A favicon mestere `icon-variants/icon-03-favicon.png`, a beépített ImageGen eszköz szerkesztési promptja a `prompts.json` fájl `favicon` bejegyzésében szerepel. A böngészőikon URL-je tartalomhash-t kap a gyorsítótár frissítéséhez.
 
 ## Forrás és licencek
 
