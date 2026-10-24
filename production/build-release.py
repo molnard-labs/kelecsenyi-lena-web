@@ -70,7 +70,7 @@ def runtime() -> dict[str, bytes]:
 
 def public_files() -> dict[str, bytes]:
     names = ('astro.css', 'astro-wheel.css', 'astro.js', 'astro-wheel.js', 'astro-wheel-geometry.js',
-             'astro-datetime.js', 'astro-interpretation.js')
+             'astro-datetime.js', 'astro-interpretation.js', 'astro-places.js', 'astro-start.js')
     files = {name: (ASTRO / name).read_bytes() for name in names}
     for dirname in ('astro-assets', 'brand-assets'):
         for path in (ASTRO / dirname).iterdir():
@@ -108,10 +108,10 @@ def main() -> None:
         plugin['public/' + name] = raw
     plugin['runtime-manifest.json'] = (json.dumps({name: hashlib.sha256(raw).hexdigest() for name, raw in engine.items()},
                                                 indent=2) + '\n').encode('utf-8')
-    (OUT / 'lena-astrology-0.2.4.zip').write_bytes(write_zip({'lena-astrology/' + n: raw for n, raw in plugin.items()}))
+    (OUT / 'lena-astrology-0.2.5.zip').write_bytes(write_zip({'lena-astrology/' + n: raw for n, raw in plugin.items()}))
     theme = {str(p.relative_to(THEME)).replace('\\', '/'): p.read_bytes() for p in THEME.rglob('*')
              if p.is_file() and p.suffix in {'.php', '.css', '.js', '.png', '.jpg', '.woff2', '.txt'}}
-    (OUT / 'zodiac-astrology-child-0.2.4.zip').write_bytes(write_zip({'zodiac-astrology-child/' + n: raw for n, raw in theme.items()}))
+    (OUT / 'zodiac-astrology-child-0.2.5.zip').write_bytes(write_zip({'zodiac-astrology-child/' + n: raw for n, raw in theme.items()}))
     (OUT / 'corresponding-source.zip').write_bytes(source)
     print(json.dumps({'source_sha256': hashlib.sha256(source).hexdigest(),
                       'artifacts': {p.name: p.stat().st_size for p in OUT.glob('*.zip')}}, indent=2))

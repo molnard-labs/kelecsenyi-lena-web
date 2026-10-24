@@ -321,6 +321,75 @@ function lena_astrology_public_remove_cors($served, $result, $request, $server)
 }
 add_filter('rest_pre_serve_request', 'lena_astrology_public_remove_cors', 20, 4);
 
+/** Validate the one-request handoff; display labels never replace the atlas ID. */
+function lena_astrology_public_prefill(string $body, array $server): array
+{
+    $error = static function (int $status, string $message): array {
+        return ['status' => $status, 'payload' => ['error' => $message]];
+    };
+    $origin = lena_astrology_public_origin();
+    if ($origin === '' || ($server['HTTP_ORIGIN'] ?? '') !== $origin) {
+        return $error(403, 'A születési adatok átvételét a főoldalról indítsd. Itt is megadhatod az adataidat.');
+    }
+    $content_type = $server['CONTENT_TYPE'] ?? '';
+    if (!is_string($content_type)
+        || strtolower(trim(explode(';', $content_type, 2)[0])) !== 'application/x-www-form-urlencoded') {
+        return $error(415, 'Az adatok átvétele nem sikerült. Add meg őket az alábbi űrlapon.');
+    }
+    if (strlen($body) < 1 || strlen($body) > 4096) {
+        return $error(413, 'Az adatok átvétele nem sikerült. Add meg őket az alábbi űrlapon.');
+    }
+    parse_str($body, $fields);
+    $expected = ['date', 'place_id', 'place_label', 'place_timezone'];
+    if (count($fields) !== count($expected) || array_diff(array_keys($fields), $expected)) {
+        return $error(400, 'Az adatok átvétele nem sikerült. Add meg őket az alábbi űrlapon.');
+    }
+    foreach ($expected as $key) {
+        if (!isset($fields[$key]) || !is_string($fields[$key])) {
+            return $error(400, 'Az adatok átvétele nem sikerült. Add meg őket az alábbi űrlapon.');
+        }
+    }
+    $date = $fields['date'];
+    if (preg_match('/\A([0-9]{4})-([0-9]{2})-([0-9]{2})\z/D', $date, $parts) !== 1
+        || !checkdate((int) $parts[2], (int) $parts[3], (int) $parts[1])
+        || $date < '1900-01-01' || $date > gmdate('Y-m-d')) {
+        return $error(400, '1900 és a mai nap közötti, érvényes születési dátumot adj meg.');
+    }
+    if (preg_match('/\A[0-9]{1,12}\z/D', $fields['place_id']) !== 1
+        || strlen($fields['place_label']) > 960
+        || preg_match('/\A[^\x00-\x1F\x7F]{1,240}\z/uD', $fields['place_label']) !== 1
+        || trim($fields['place_label']) === ''
+        || preg_match('/\A[A-Za-z0-9_+.\/-]{1,80}\z/D', $fields['place_timezone']) !== 1) {
+        return $error(400, 'Válassz egy születési helyet a településjavaslatok közül.');
+    }
+    return ['status' => 200, 'payload' => [
+        'date' => $date,
+        'place' => [
+            'id' => $fields['place_id'],
+            'label' => $fields['place_label'],
+            'timezone' => $fields['place_timezone'],
+        ],
+    ]];
+}
+
+/** JSON is inert page data and cannot close its script element. */
+function lena_astrology_public_prefill_html(string $html, array $payload): string
+{
+    $prefill = '';
+    if ($payload) {
+        $json = wp_json_encode($payload, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);
+        if (is_string($json)) {
+            $prefill = '<script type="application/json" id="birth-prefill">' . $json . '</script>';
+        }
+    }
+    return str_replace('<!-- LENA_BIRTH_PREFILL -->', $prefill, $html);
+}
+
+function lena_astrology_public_page_methods(string $relative): array
+{
+    return $relative === 'public/analysis.html' ? ['GET', 'HEAD', 'POST'] : ['GET', 'HEAD'];
+}
+
 /** Serve only exact reviewed files, bypassing the WordPress theme stylesheet. */
 function lena_astrology_public_page(): void
 {
@@ -358,12 +427,22 @@ function lena_astrology_public_page(): void
             return;
         }
         $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
-        if (!in_array($method, ['GET', 'HEAD'], true)) {
+        $methods = lena_astrology_public_page_methods($relative);
+        if (!in_array($method, $methods, true)) {
             status_header(405);
-            header('Allow: GET, HEAD');
+            header('Allow: ' . implode(', ', $methods));
             nocache_headers();
             header('X-Content-Type-Options: nosniff');
             exit;
+        }
+        $response_status = 200;
+        $prefill = [];
+        if ($method === 'POST') {
+            // Read at most one byte over the limit, without retaining input anywhere.
+            $body = file_get_contents('php://input', false, null, 0, 4097);
+            $handoff = lena_astrology_public_prefill(is_string($body) ? $body : '', $_SERVER);
+            $response_status = $handoff['status'];
+            $prefill = $handoff['payload'];
         }
         $html = null;
         if (strpos($mime, 'text/html') === 0) {
@@ -377,8 +456,9 @@ function lena_astrology_public_page(): void
                 [esc_attr(untrailingslashit(plugins_url('public', $plugin))), esc_attr(untrailingslashit(rest_url('lena/v1')))],
                 $html
             );
+            $html = lena_astrology_public_prefill_html($html, $prefill);
         }
-        status_header(200);
+        status_header($response_status);
         nocache_headers();
         header('Content-Type: ' . $mime);
         header('X-Content-Type-Options: nosniff');
@@ -392,7 +472,7 @@ function lena_astrology_public_page(): void
         }
         if ($method !== 'HEAD') {
             if ($html !== null) {
-                echo $html; // Fixed reviewed HTML; only escaped URL tokens are substituted.
+                echo $html; // Escaped URL tokens and safely encoded, inert prefill data.
             } else {
                 readfile($file);
             }

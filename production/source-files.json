@@ -30,6 +30,8 @@
     "astrology/astro-datetime.js",
     "astrology/astro-interpretation.js",
     "astrology/astro-page.template.html",
+    "astrology/astro-places.js",
+    "astrology/astro-start.js",
     "astrology/astro-wheel-geometry.js",
     "astrology/astro-wheel.css",
     "astrology/astro-wheel.js",
@@ -44,6 +46,7 @@
     "astrology/requirements-astro.txt",
     "astrology/tests/test_astro_engine.py",
     "astrology/tests/test_datetime.mjs",
+    "astrology/tests/test_places.mjs",
     "astrology/tests/test_wheel_geometry.mjs",
     "astrology/third-party-src/README.md",
     "astrology/third-party-src/manifest.json",
@@ -122,6 +125,7 @@
     "wordpress/themes/zodiac-astrology-child/page-addcontact.php",
     "wordpress/themes/zodiac-astrology-child/single-lena_event.php",
     "wordpress/themes/zodiac-astrology-child/style.css",
+    "wordpress/themes/zodiac-astrology-child/template-parts/birth-start.php",
     "wordpress/themes/zodiac-astrology-child/template-parts/celestial-intro.php",
     "wordpress/themes/zodiac-astrology-child/template-parts/event-card.php"
   ]

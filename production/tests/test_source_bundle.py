@@ -21,10 +21,12 @@ class SourceBundleTests(unittest.TestCase):
         for name in ("LICENSE", "README.md", "THIRD_PARTY_NOTICES.md", "production/source-files.json",
                      "production/source_bundle.py", "production/build-release.py", "production/engine_cli.py",
                      "astrology/astro_engine.py", "astrology/astro.js", "astrology/astro-datetime.js",
+                     "astrology/astro-places.js", "astrology/astro-start.js", "astrology/tests/test_places.mjs",
                      "astrology/astro-wheel.js", "astrology/bootstrap_astro.py", "astrology/requirements-astro.txt",
                      "astrology/licenses.html", "astrology/third-party-src/pyswisseph-2.10.3.2.tar.gz",
                      "wordpress/plugins/lena-core/lena-core.php", "wordpress/plugins/lena-core/setup-content.php",
                      "wordpress/plugins/lena-astrology/includes/public.php", "wordpress/themes/zodiac-astrology-child/front-page.php",
+                     "wordpress/themes/zodiac-astrology-child/template-parts/birth-start.php",
                      "content/adatkezelesi-tajekoztato.html"):
             self.assertIn(name, files)
         self.assertTrue(any(name.startswith("licenses/") for name in files))

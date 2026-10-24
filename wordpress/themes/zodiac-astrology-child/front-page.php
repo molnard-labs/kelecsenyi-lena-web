@@ -24,7 +24,11 @@ $events_url = get_post_type_archive_link('lena_event');
                 <a class="btn button-slider button-secondary" href="#rolam">Ismerj meg</a>
             </div>
             <?php if (kelecsenyi_lena_analysis_available()) : ?>
-                <p class="quick-reading-cta"><a href="<?php echo esc_url(home_url('/gyors-elemzes/')); ?>">Kérek egy rövid képletelemzést <span aria-hidden="true">→</span></a></p>
+                <?php if (function_exists('lena_astrology_public_directory') && is_readable(lena_astrology_public_directory() . '/public/astro-start.js')) : ?>
+                    <?php get_template_part('template-parts/birth', 'start'); ?>
+                <?php else : ?>
+                    <p class="quick-reading-cta"><a href="<?php echo esc_url(home_url('/gyors-elemzes/')); ?>">Kérek egy rövid képletelemzést <span aria-hidden="true">→</span></a></p>
+                <?php endif; ?>
             <?php endif; ?>
         </div>
     </div>

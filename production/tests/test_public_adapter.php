@@ -75,4 +75,43 @@ $key = array_key_first($transients);
 check(strpos($key, '192.0.2.1') === false, 'transient key contains no raw IP');
 $options['lena_astrology_ready'] = false;
 check(chart($valid_headers)->status === 503, 'disabled API never calculates');
+
+$handoff_server = ['HTTP_ORIGIN' => 'https://lena.example:8443', 'CONTENT_TYPE' => 'application/x-www-form-urlencoded; charset=UTF-8'];
+$handoff_fields = ['date' => '1990-05-21', 'place_id' => '3054643', 'place_label' => 'Budapest, Magyarország', 'place_timezone' => 'Europe/Budapest'];
+$handoff_body = http_build_query($handoff_fields);
+$handoff = lena_astrology_public_prefill($handoff_body, $handoff_server);
+check($handoff['status'] === 200, 'homepage handoff accepted');
+check($handoff['payload'] === ['date' => '1990-05-21', 'place' => ['id' => '3054643', 'label' => 'Budapest, Magyarország', 'timezone' => 'Europe/Budapest']], 'date and selected Budapest preserved without a guessed time');
+$changed_place = array_replace($handoff_fields, ['place_id' => '715429', 'place_label' => 'Szeged, Magyarország']);
+check(lena_astrology_public_prefill(http_build_query($changed_place), $handoff_server)['payload']['place']['id'] === '715429', 'selected alternative city preserved');
+check(lena_astrology_public_prefill($handoff_body, [])['status'] === 403, 'handoff needs origin');
+check(lena_astrology_public_prefill($handoff_body, array_replace($handoff_server, ['HTTP_ORIGIN' => 'https://foreign.example']))['status'] === 403, 'foreign handoff refused');
+check(lena_astrology_public_prefill($handoff_body, array_replace($handoff_server, ['CONTENT_TYPE' => 'application/json']))['status'] === 415, 'handoff accepts form encoding only');
+check(lena_astrology_public_prefill(str_repeat('x', 4097), $handoff_server)['status'] === 413, 'handoff body bounded');
+check(lena_astrology_public_prefill('', $handoff_server)['status'] === 413, 'empty handoff refused');
+foreach (['1900-02-29', '2023-02-29', '1990-13-01', '1990-04-31', '1899-12-31', '9999-01-01', '19900521', '1990-05-21<script>'] as $date) {
+    $rejected = lena_astrology_public_prefill(http_build_query(array_replace($handoff_fields, ['date' => $date])), $handoff_server);
+    check($rejected['status'] === 400 && array_keys($rejected['payload']) === ['error'], 'invalid date is neither prefilled nor reflected');
+}
+foreach (['1900-01-01', '2000-02-29', gmdate('Y-m-d')] as $date) {
+    check(lena_astrology_public_prefill(http_build_query(array_replace($handoff_fields, ['date' => $date])), $handoff_server)['status'] === 200, 'valid date boundary accepted');
+}
+foreach ([['date' => ['1990-05-21']], ['place_id' => ['3054643']], ['place_id' => '3054643x'], ['place_id' => str_repeat('1', 13)],
+          ['place_label' => "Budapest\nOther"], ['place_label' => ' '], ['place_label' => str_repeat('á', 241)], ['place_label' => "\xff"],
+          ['place_timezone' => ['Europe/Budapest']], ['place_timezone' => '<script>'], ['unexpected' => 'data']] as $invalid_fields) {
+    check(lena_astrology_public_prefill(http_build_query(array_replace($handoff_fields, $invalid_fields)), $handoff_server)['status'] === 400, 'invalid handoff field rejected');
+}
+check(lena_astrology_public_prefill('date=1990-05-21', $handoff_server)['status'] === 400, 'incomplete handoff rejected');
+$hostile_label = '</script><script>alert("x")</script> & O\'Town';
+$escaped = lena_astrology_public_prefill(http_build_query(array_replace($handoff_fields, ['place_label' => $hostile_label])), $handoff_server);
+check($escaped['status'] === 200, 'presentation text treated as data');
+$injected = lena_astrology_public_prefill_html('<body><!-- LENA_BIRTH_PREFILL --></body>', $escaped['payload']);
+check(substr_count($injected, '</script>') === 1 && strpos($injected, '<script>alert') === false, 'untrusted text cannot escape inert script');
+preg_match('/<script type="application\/json" id="birth-prefill">(.*?)<\/script>/s', $injected, $prefill_match);
+check(json_decode($prefill_match[1], true)['place']['label'] === $hostile_label, 'encoded prefill roundtrips without HTML interpretation');
+check(lena_astrology_public_prefill_html('<body><!-- LENA_BIRTH_PREFILL --></body>', []) === '<body></body>', 'direct GET has no prefill data');
+check(lena_astrology_public_page_methods('public/analysis.html') === ['GET', 'HEAD', 'POST'], 'analysis route accepts form navigation');
+foreach (['public/licenses.html', 'source.zip', 'LICENSE', 'THIRD_PARTY_NOTICES.md'] as $route_file) {
+    check(lena_astrology_public_page_methods($route_file) === ['GET', 'HEAD'], 'other public routes remain read only');
+}
 echo $checks . " public adapter checks passed\n";

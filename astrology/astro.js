@@ -1,32 +1,29 @@
 import {buildReading,degreeLabel} from './astro-interpretation.js';
 import {renderWheel} from './astro-wheel.js';
 import {attachBirthInputMask,localTodayISO,parseBirthDate,parseBirthTime} from './astro-datetime.js';
+import {createPlacePicker,DEFAULT_BIRTH_PLACE} from './astro-places.js';
 
 const $=selector=>document.querySelector(selector);
 const apiBase=$('meta[name="lena-api-base"]')?.content.replace(/\/$/,'')||'/api';
 const form=$('#birth-form'),dateInput=$('#birth-date'),timeInput=$('#birth-time'),placeInput=$('#birth-place');
-const list=$('#place-options'),placeStatus=$('#place-status'),button=$('#calculate-button'),result=$('#chart-result');
-let selectedPlace=null,places=[],activeIndex=-1,searchTimer=null,searchController=null,searchSequence=0;
+const button=$('#calculate-button'),result=$('#chart-result');
 let chartController=null,generation=0,foldIdentity='',statusReady=false;
 let wheelCleanup=null;
 let maximumDate=localTodayISO();
 
 function node(tag,className,text){const el=document.createElement(tag);if(className)el.className=className;if(text!==undefined)el.textContent=text;return el;}
-function closeList(){list.hidden=true;placeInput.setAttribute('aria-expanded','false');placeInput.removeAttribute('aria-activedescendant');activeIndex=-1;}
 function errorFor(input,message){const id=input.id.replace('birth-','');$(`#${id}-error`).textContent=message;input.setAttribute('aria-invalid',String(Boolean(message)));}
 function clearErrors(){for(const input of [dateInput,timeInput,placeInput])errorFor(input,'');$('#form-error').hidden=true;$('#form-error').textContent='';}
 function hideResult(){result.hidden=true;result.setAttribute('aria-busy','false');wheelCleanup?.();wheelCleanup=null;$('#chart-wheel').replaceChildren();}
 function invalidate(){generation++;chartController?.abort();chartController=null;hideResult();$('#fold-choice').hidden=true;$('#fold-options').replaceChildren();foldIdentity='';button.disabled=false;button.textContent='Megnézem a képletem →';$('#form-status').textContent='';clearErrors();}
-function resetSelection(){selectedPlace=null;$('#place-selected').hidden=true;$('#place-selected').textContent='';}
-function selectPlace(index){const place=places[index];if(!place)return;searchController?.abort();clearTimeout(searchTimer);searchSequence++;invalidate();selectedPlace=place;placeInput.value=place.label;$('#place-selected').textContent=`${place.label} · ${place.timezone}`;$('#place-selected').hidden=false;errorFor(placeInput,'');closeList();placeStatus.textContent=`Kiválasztva: ${place.label}`;}
-function highlight(index){if(!places.length)return;activeIndex=(index+places.length)%places.length;[...list.children].forEach((el,i)=>el.setAttribute('aria-selected',String(i===activeIndex)));placeInput.setAttribute('aria-activedescendant',`place-${activeIndex}`);list.children[activeIndex]?.scrollIntoView({block:'nearest'});}
-function showPlaces(items){places=items;activeIndex=-1;list.replaceChildren();placeInput.removeAttribute('aria-activedescendant');for(const [i,place] of items.entries()){const item=node('li','',place.label);item.id=`place-${i}`;item.setAttribute('role','option');item.setAttribute('aria-selected','false');item.append(node('small','',place.timezone));item.addEventListener('mousedown',event=>event.preventDefault());item.addEventListener('click',()=>selectPlace(i));list.append(item);}list.hidden=items.length===0;placeInput.setAttribute('aria-expanded',String(items.length>0));placeStatus.textContent=items.length?`${items.length} találat. A nyílbillentyűkkel választhatsz.`:'Nincs találat. Próbáld a település mai nevét vagy ékezet nélküli alakját.';if(!items.length)errorFor(placeInput,'Nem található ilyen település. Próbáld más névalakkal.');}
+function showPlaceSelection(place){
+  $('#place-selected').hidden=!place;
+  $('#place-selected').textContent=place?`${place.label} · ${place.timezone}`:'';
+}
+const placePicker=createPlacePicker({input:placeInput,list:$('#place-options'),status:$('#place-status'),apiBase,
+  setError:message=>errorFor(placeInput,message),onChange:place=>{invalidate();showPlaceSelection(place);}});
 
-placeInput.addEventListener('input',()=>{invalidate();resetSelection();closeList();places=[];list.replaceChildren();searchController?.abort();clearTimeout(searchTimer);const sequence=++searchSequence;const query=placeInput.value.trim();if(query.length<2){placeStatus.textContent='Írj be legalább két karaktert.';return;}placeStatus.textContent='Települések keresése…';searchTimer=setTimeout(async()=>{const controller=new AbortController();searchController=controller;try{const response=await fetch(`${apiBase}/places?q=${encodeURIComponent(query)}`,{signal:controller.signal,cache:'no-store'});const payload=await response.json();if(!response.ok)throw new Error(payload.error?.message||'A településkeresés nem sikerült.');if(sequence===searchSequence)showPlaces(payload.places);}catch(error){if(error.name!=='AbortError'&&sequence===searchSequence){closeList();errorFor(placeInput,'A helykereső nem érhető el. Próbáld újra rövidesen.');placeStatus.textContent='A keresés nem sikerült.';}}},200);});
-placeInput.addEventListener('keydown',event=>{if(event.key==='ArrowDown'||event.key==='ArrowUp'){if(places.length){event.preventDefault();list.hidden=false;placeInput.setAttribute('aria-expanded','true');highlight(activeIndex<0?(event.key==='ArrowDown'?0:places.length-1):activeIndex+(event.key==='ArrowDown'?1:-1));}}else if(event.key==='Enter'&&!list.hidden&&activeIndex>=0){event.preventDefault();selectPlace(activeIndex);}else if(event.key==='Escape')closeList();else if(event.key==='Tab')closeList();});
-document.addEventListener('click',event=>{if(!event.target.closest('.place-field'))closeList();});
 for(const input of [dateInput,timeInput,$('#house-system')])input.addEventListener('input',invalidate);
-attachBirthInputMask(dateInput,'date');
 attachBirthInputMask(timeInput,'time');
 dateInput.addEventListener('blur',()=>{const parsed=parseBirthDate(dateInput.value,{max:maximumDate});if(parsed.valid)dateInput.value=parsed.formatted;});
 timeInput.addEventListener('blur',()=>{const parsed=parseBirthTime(timeInput.value);if(parsed.valid)timeInput.value=parsed.formatted;});
@@ -55,15 +52,15 @@ function renderChart(chart){
 function showServerError(error,identity){const container=$('#form-error');container.textContent=error.message||'A számítás nem sikerült. Kérlek, próbáld újra.';container.hidden=false;if(error.code==='ambiguous_time'&&Array.isArray(error.choices)){foldIdentity=identity;const options=$('#fold-options');options.replaceChildren();for(const choice of error.choices){const label=node('label'),radio=node('input');radio.type='radio';radio.name='fold';radio.value=String(choice.fold);label.append(radio,node('span','',choice.label));options.append(label);}$('#fold-choice').hidden=false;options.querySelector('input')?.focus();}else if(['invalid_time','invalid_datetime','nonexistent_time'].includes(error.code)){errorFor(timeInput,error.message);timeInput.focus();}else if(['invalid_date','date_range'].includes(error.code)){errorFor(dateInput,error.message);dateInput.focus();}else if(error.code==='invalid_place'){errorFor(placeInput,error.message);placeInput.focus();}else{container.tabIndex=-1;container.focus();}}
 
 form.addEventListener('submit',async event=>{
-  event.preventDefault();clearErrors();closeList();
+  event.preventDefault();clearErrors();placePicker.close();
   let invalid=null;
   const birthDate=parseBirthDate(dateInput.value,{max:maximumDate}),birthTime=parseBirthTime(timeInput.value);
-  if(!selectedPlace){errorFor(placeInput,'Válassz egy települést a találati listából.');invalid=placeInput;}
+  if(!placePicker.selection){errorFor(placeInput,'Válassz egy települést a találati listából.');invalid=placeInput;}
   if(!birthTime.valid){errorFor(timeInput,'Érvényes, 24 órás időpont szükséges (00:00–23:59), például: 14:30.');invalid=timeInput;}
   if(!birthDate.valid){errorFor(dateInput,'1900 és a mai nap közötti, érvényes dátum szükséges. Például: 1990. 05. 21.');invalid=dateInput;}
   if(invalid){invalid.focus();return;}
   dateInput.value=birthDate.formatted;timeInput.value=birthTime.formatted;
-  const payload={date:birthDate.iso,time:birthTime.iso,place_id:selectedPlace.id,house_system:$('#house-system').value};
+  const payload={date:birthDate.iso,time:birthTime.iso,place_id:placePicker.selection.id,house_system:$('#house-system').value};
   const identity=JSON.stringify(payload);
   if(!$('#fold-choice').hidden&&foldIdentity===identity){const chosen=form.querySelector('input[name=fold]:checked');if(!chosen){$('#form-error').textContent='Válaszd ki az óraátállítás szerinti időpontot.';$('#form-error').hidden=false;form.querySelector('input[name=fold]')?.focus();return;}payload.fold=Number(chosen.value);}
   const thisGeneration=++generation;chartController?.abort();const controller=new AbortController();chartController=controller;
@@ -74,6 +71,33 @@ form.addEventListener('submit',async event=>{
 });
 
 $('#edit-data').addEventListener('click',()=>{dateInput.focus({preventScroll:true});form.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth',block:'center'});});
-$('#clear-data').addEventListener('click',()=>{invalidate();form.reset();resetSelection();searchController?.abort();searchSequence++;clearTimeout(searchTimer);places=[];list.replaceChildren();closeList();for(const selector of ['#main-triad','#positions-body','#houses-body','#result-birth','#synthesis-title','#synthesis-copy','#reflection-question','#node-title','#node-copy','#aspects-reading','#calculation-meta'])$(selector).replaceChildren();$('#form-status').textContent='Az adatok és az eredmény törölve.';dateInput.focus();});
+$('#clear-data').addEventListener('click',()=>{invalidate();form.reset();placePicker.reset({notify:false});showPlaceSelection(null);for(const selector of ['#main-triad','#positions-body','#houses-body','#result-birth','#synthesis-title','#synthesis-copy','#reflection-question','#node-title','#node-copy','#aspects-reading','#calculation-meta'])$(selector).replaceChildren();$('.form-lead').textContent=defaultFormLead;$('.step-number').textContent='01';$('#form-status').textContent='Az adatok és az eredmény törölve.';dateInput.focus();
+  // Replace the POST navigation with a real GET so Reload cannot resubmit cleared data.
+  if(receivedPrefill)window.location.replace(window.location.pathname);
+});
 
 fetch(`${apiBase}/status`,{cache:'no-store'}).then(response=>{if(!response.ok)throw new Error();return response.json();}).then(status=>{statusReady=status.ready;if(status.date_range?.max)maximumDate=status.date_range.max;if(!statusReady)throw new Error();}).catch(()=>{const error=$('#form-error');error.textContent='A számolószolgáltatás átmenetileg nem érhető el. Kérlek, próbáld újra rövidesen.';error.hidden=false;});
+
+// POST prefill lives only in this response and the form, never in a URL or storage.
+const defaultFormLead=$('.form-lead').textContent;
+const prefillElement=$('#birth-prefill');
+const receivedPrefill=Boolean(prefillElement);
+let prefill=null;
+try{prefill=prefillElement?JSON.parse(prefillElement.textContent):null;}catch{}
+prefillElement?.remove();
+if(prefill?.error){
+  $('#form-error').textContent=prefill.error;$('#form-error').hidden=false;
+  $('#form-error').tabIndex=-1;$('#form-error').focus();
+}else{
+  const initialPlace=prefill?.place||DEFAULT_BIRTH_PLACE;
+  placePicker.select(initialPlace,{notify:false});showPlaceSelection(initialPlace);
+  const initialDate=prefill?parseBirthDate(prefill.date,{max:maximumDate}):null;
+  if(initialDate?.valid){
+    dateInput.value=initialDate.formatted;
+    $('.step-number').textContent='02';
+    $('.form-lead').textContent='A dátumot és a születési helyet átvettük. Add meg a születési órát és percet, és elkészítjük a képletedet. Minden adatot módosíthatsz.';
+    timeInput.focus();
+  }
+}
+prefill=null;
+attachBirthInputMask(dateInput,'date');

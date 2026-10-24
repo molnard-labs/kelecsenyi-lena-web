@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Léna Képletelemző
  * Description: Magyar születési képletelemzés, interaktív képletábra és helyben futó Swiss Ephemeris számolómotor.
- * Version: 0.2.4
+ * Version: 0.2.5
  * License: AGPL-3.0-only
  * SPDX-License-Identifier: AGPL-3.0-only
  * Text Domain: lena-astrology
